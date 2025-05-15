@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { Link } from "expo-router";
+import { Text, View, StyleSheet } from "react-native";
 
 export default function Index() {
   return (
@@ -9,7 +10,16 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>Edit app/index to edit this screen.</Text>
+      <Link href="/lineGraphTest" style={styles.button}>
+        Go to line graph test
+      </Link>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    textDecorationLine: "underline",
+  }
+});
