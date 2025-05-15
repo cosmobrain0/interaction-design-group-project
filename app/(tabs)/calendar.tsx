@@ -1,5 +1,5 @@
-import { Styles } from "@/constants/Styles"
-import { Text, View, FlatList, TouchableOpacity } from "react-native";
+import { Styles } from "@/constants/Styles";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
 export default function Calendar() {
   const data = Array.from({ length: 20 }, (_, i) => ({
@@ -14,9 +14,8 @@ export default function Calendar() {
   const renderItem = ({ item }: { item: { id: string; title: string } }) => (
     <TouchableOpacity
       onPress={() => handlePress(item)}
-      style={styles.item}
     >
-      <Text style={styles.itemText}>{item.title}</Text>
+      <Text>{item.title}</Text>
     </TouchableOpacity>
   );
 
@@ -30,11 +29,3 @@ export default function Calendar() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center"
-    }
-  })

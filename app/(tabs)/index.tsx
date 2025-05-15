@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react"
-import { StyleSheet, Text, View, Pressable, Platform, SafeAreaView, ActivityIndicator } from "react-native"
-import { WebView } from "react-native-webview"
+import { CloudCoverMapView } from "@/components/CloudCoverMapView"
+import { Styles } from "@/constants/Styles"
+import React, { useEffect, useState } from "react"
+import { ActivityIndicator, Pressable, View } from "react-native"
 import { LineChart, XAxis, YAxis } from 'react-native-svg-charts'
 
 export default function Home() {
@@ -39,24 +40,10 @@ export default function Home() {
   }
 
   return showWebView ? (
-    <SafeAreaView style={styles.webviewContainer}>
-      <View style={styles.topBar}>
-        <Pressable onPress={handleBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>Back</Text>
-        </Pressable>
-      </View>
-      <View style={styles.webviewWrapper}>
-        <WebView
-          style={styles.webview}
-          source={{
-            uri: "https://weather.metoffice.gov.uk/maps-and-charts/cloud-cover-map#?model=ukmo-ukv&layer=cloud-amount-total&bbox=[[42.16340342422403,-37.22167968750001],[64.11060221954631,29.223632812500004]]"
-          }}
-        />
-      </View>
-    </SafeAreaView>
+    <CloudCoverMapView handleBack={handleBack}/>
   ) : (
-    <View style={styles.container}>
-      <Pressable style={styles.box} onPress={handlePress}>
+    <View style={Styles.container}>
+      <Pressable style={Styles.box} onPress={handlePress}>
         {loading ? (
           <ActivityIndicator size="large" color="#888" />
         ) : (
@@ -79,7 +66,7 @@ export default function Home() {
             <XAxis
               style={{ marginTop: 10, height: 20, marginLeft: 35 }}
               data={chartData}
-              formatLabel={(_, index) => index % 3 === 0 ? chartLabels[index] : ''}
+              formatLabel={(_: any, index: number) => index % 3 === 0 ? chartLabels[index] : ''}
               contentInset={{ left: 10, right: 10 }}
               svg={{ fontSize: 10, fill: 'black' }}
             />
@@ -89,54 +76,3 @@ export default function Home() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  box: {
-    position: "absolute",
-    top: 200,
-    left: 25,
-    backgroundColor: "#ffffff",
-    padding: 10,
-    width: "90%",
-    height: "30%",
-    borderRadius: 8,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4
-  },
-  text: {
-    color: "white",
-    fontWeight: "bold"
-  },
-  webviewContainer: {
-    flex: 1,
-    backgroundColor: "white"
-  },
-  topBar: {
-    height: Platform.OS === "ios" ? 60 : 40,
-    justifyContent: "center",
-    paddingHorizontal: 10,
-    backgroundColor: "#f0f0f0"
-  },
-  backButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 12
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: "#007AFF"
-  },
-  webviewWrapper: {
-    flex: 1
-  },
-  webview: {
-    flex: 1
-  }
-})
