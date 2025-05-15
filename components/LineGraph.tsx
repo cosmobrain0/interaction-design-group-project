@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Text } from "react-native";
 
 export default function LineGraph({ data_points }: { data_points: Array<number> }) {
@@ -17,10 +18,12 @@ export default function LineGraph({ data_points }: { data_points: Array<number> 
         }
     });
 
+    let canvas = useRef(null);
+
 
 
     return (
-        <canvas>
+        <canvas ref={canvas}>
             Your browser does not support a Canvas
         </canvas>
     )
