@@ -1,22 +1,12 @@
+import { Styles } from "@/constants/Styles"
 import { Link } from "expo-router"
-import { StyleSheet, Text, View } from "react-native"
+import { Text, View } from "react-native"
 
 export default function Home() {
-  return <View style={styles.container}>
+  return <View style={Styles.container}>
     <Text>Home</Text>
-    <Link href="../lineGraphTest" style={styles.button}>
+    <Link href="../lineGraphTest" style={Styles.button}>
       Go to line graph test
     </Link>
   </View>
 }
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    button: {
-      textDecorationLine: "underline",
-    }
-  })
