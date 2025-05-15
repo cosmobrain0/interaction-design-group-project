@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useRef } from "react";
 
 export default function LineGraph({ data_points }: { data_points: Array<number> }) {
     const xAxisLength = data_points.length;
@@ -17,17 +17,13 @@ export default function LineGraph({ data_points }: { data_points: Array<number> 
         }
     });
 
+    let canvas = useRef(null);
 
 
-    return <View style={styles.container}>
-        <Text>Line Graph</Text>
-    </View>
+
+    return (
+        <canvas ref={canvas}>
+            Your browser does not support a Canvas
+        </canvas>
+    )
 }
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center"
-    }
-  })
