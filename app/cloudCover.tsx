@@ -1,15 +1,9 @@
 import { Styles } from "@/constants/Styles";
-import { Pressable, SafeAreaView, Text, View } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import WebView from "react-native-webview";
 
-export function CloudCoverMapView({ handleBack }: any) {
-  return (
-    <SafeAreaView style={Styles.webviewContainer}>
-      <View style={Styles.topBar}>
-        <Pressable onPress={handleBack} style={Styles.backButton}>
-          <Text style={Styles.backButtonText}>Back</Text>
-        </Pressable>
-      </View>
+export default function CloudCover() {
+  return <SafeAreaView style={Styles.webviewContainer}>
       <View style={Styles.webviewWrapper}>
         <WebView
           style={Styles.webview}
@@ -19,5 +13,4 @@ export function CloudCoverMapView({ handleBack }: any) {
         />
       </View>
     </SafeAreaView>
-  )
 }

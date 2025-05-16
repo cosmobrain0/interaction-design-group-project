@@ -1,11 +1,11 @@
-import { CloudCoverMapView } from "@/components/CloudCoverMapView"
 import { Styles } from "@/constants/Styles"
+import { curveMonotoneX } from 'd3-shape'
+import { Link } from "expo-router"
 import React, { useEffect, useState } from "react"
-import { ActivityIndicator, Pressable, View } from "react-native"
-import { LineChart, XAxis, YAxis } from 'react-native-svg-charts'
+import { ActivityIndicator, View } from "react-native"
+import { Grid, LineChart, XAxis, YAxis } from 'react-native-svg-charts'
 
 export default function Home() {
-  const [showWebView, setShowWebView] = useState(false)
   const [chartData, setChartData] = useState<number[]>([])
   const [chartLabels, setChartLabels] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
@@ -31,48 +31,39 @@ export default function Home() {
     fetchData()
   }, [])
 
-  const handlePress = () => {
-    setShowWebView(true)
-  }
-
-  const handleBack = () => {
-    setShowWebView(false)
-  }
-
-  return showWebView ? (
-    <CloudCoverMapView handleBack={handleBack}/>
-  ) : (
-    <View style={Styles.container}>
-      <Pressable style={Styles.box} onPress={handlePress}>
-        {loading ? (
-          <ActivityIndicator size="large" color="#888" />
-        ) : (
-          <View>
-            <View style={{ flexDirection: 'row', height: 180 }}>
-              <YAxis
-                data={chartData}
-                contentInset={{ top: 20, bottom: 20 }}
-                svg={{ fontSize: 10, fill: 'black' }}
-                style={{ marginRight: 5 }}
-                numberOfTicks={5}
-              />
-              <LineChart
-                style={{ flex: 1 }}
-                data={chartData}
-                svg={{ stroke: 'rgb(134, 65, 244)' }}
-                contentInset={{ top: 20, bottom: 20 }}
-              />
-            </View>
-            <XAxis
-              style={{ marginTop: 10, height: 20, marginLeft: 35 }}
+  return <View style={Styles.container}>
+    <Link href="/cloudCover" style={Styles.box}>
+      { loading ? (
+        <ActivityIndicator size="large" color="#888" />
+      ) : (
+        <View style={Styles.container}>
+          <View style={{ flexDirection: 'row', height: 180 }}>
+            <YAxis
               data={chartData}
-              formatLabel={(_: any, index: number) => index % 3 === 0 ? chartLabels[index] : ''}
-              contentInset={{ left: 10, right: 10 }}
+              contentInset={{ top: 20, bottom: 5 }}
               svg={{ fontSize: 10, fill: 'black' }}
+              style={{ marginRight: 5 }}
+              numberOfTicks={5}
             />
+            <LineChart
+              style={{ flex: 1 }}
+              data={chartData}
+              curve={curveMonotoneX}
+              svg={{ stroke: 'rgb(134, 65, 244)', strokeWidth: 2 }}
+              contentInset={{ top: 20, bottom: 5 }}
+            >
+              <Grid direction={Grid.Direction.HORIZONTAL} />
+            </LineChart>
           </View>
-        )}
-      </Pressable>
-    </View>
-  )
+          <XAxis
+            style={{ marginTop: 10, height: 20, marginLeft: 35, width:'100%' }}
+            data={chartData}
+            formatLabel={(_: any, index: number) => index % 3 === 0 ? chartLabels[index] : ''}
+            contentInset={{ left: 10, right: 10 }}
+            svg={{ fontSize: 10, fill: 'black' }}
+          />
+        </View>
+      )}
+    </Link>
+  </View>
 }
