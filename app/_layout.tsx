@@ -1,9 +1,11 @@
+import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import React from "react";
 
 export default function TabsLayout() {
   return (
-    <Stack>
+    <ThemeProvider value={DarkTheme}>
+      <Stack>
       <Stack.Screen
         name="(tabs)"
         options={{
@@ -19,5 +21,6 @@ export default function TabsLayout() {
       />
       <Stack.Screen name="lineGraphTest" options={{ title: "Line Graph Test" }} />
     </Stack>
+    </ThemeProvider>
   );
 }

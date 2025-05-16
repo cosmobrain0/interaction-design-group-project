@@ -14,7 +14,7 @@ export default function Home() {
     fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
   }, [])
 
-  return <View style={Styles.container}>
+  return <View style={[Styles.container, Styles.background]}>
     <Link href="/cloudCover" style={Styles.box}>
       { cloudCoverageLoading ? (
         <ActivityIndicator size="large" color="#888" />

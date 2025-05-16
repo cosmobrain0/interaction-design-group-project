@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
 import { curveMonotoneX } from "d3-shape";
 import { View } from "react-native";
@@ -9,7 +10,7 @@ export function LineChart({ chartData, chartLabels }: any) {
       <YAxis
         data={chartData}
         contentInset={{ top: 20, bottom: 5 }}
-        svg={{ fontSize: 10, fill: 'black' }}
+        svg={{ fontSize: 10, fill: Colors.foregroundSecondary }}
         style={{ marginRight: 5 }}
         numberOfTicks={5}
       />
@@ -17,10 +18,13 @@ export function LineChart({ chartData, chartLabels }: any) {
         style={{ flex: 1 }}
         data={chartData}
         curve={curveMonotoneX}
-        svg={{ stroke: 'rgb(134, 65, 244)', strokeWidth: 2 }}
+        svg={{ stroke: Colors.foregroundPrimary, strokeWidth: 2 }}
         contentInset={{ top: 20, bottom: 5 }}
       >
-        <Grid direction={Grid.Direction.HORIZONTAL} />
+        <Grid
+          direction={Grid.Direction.HORIZONTAL}
+          svg={{ stroke: 'white', strokeOpacity: 0.1 }}
+        />
       </Chart>
     </View>
     <XAxis
@@ -28,7 +32,7 @@ export function LineChart({ chartData, chartLabels }: any) {
       data={chartData}
       formatLabel={(_: any, index: number) => index % 3 === 0 ? chartLabels[index] : ''}
       contentInset={{ left: 10, right: 10 }}
-      svg={{ fontSize: 10, fill: 'black' }}
+      svg={{ fontSize: 10, fill: Colors.foregroundSecondary }}
     />
   </View>
 }

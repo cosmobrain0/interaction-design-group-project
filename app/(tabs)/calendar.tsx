@@ -20,7 +20,7 @@ export default function Calendar() {
   );
 
   return (
-    <View style={Styles.container}>
+    <View style={[Styles.container, Styles.background]}>
       <FlatList
         data={data}
         renderItem={renderItem}
