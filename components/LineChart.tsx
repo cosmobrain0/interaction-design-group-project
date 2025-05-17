@@ -5,33 +5,33 @@ import { View } from "react-native";
 import { LineChart as Chart, Grid, XAxis, YAxis } from "react-native-svg-charts";
 
 export function LineChart({ chartData, chartLabels }: any) {
-  return <View style={Styles.container}>
-    <View style={{ flexDirection: 'row', height: 180 }}>
+  return <View style={[Styles.container, { width: "100%", height: "100%" } ]}>
+    <View style={{ flexDirection: 'row', height: "100%" }}>
       <YAxis
         data={chartData}
-        contentInset={{ top: 20, bottom: 5 }}
+        contentInset={{ top: 10, bottom: 7.5 }}
         svg={{ fontSize: 10, fill: Colors.foregroundSecondary }}
-        style={{ marginRight: 5 }}
+        style={{ width: 15 }}
         numberOfTicks={5}
       />
       <Chart
-        style={{ flex: 1 }}
+        style={{ flex: 1, paddingLeft: 3 }}
         data={chartData}
         curve={curveMonotoneX}
         svg={{ stroke: Colors.foregroundPrimary, strokeWidth: 2 }}
-        contentInset={{ top: 20, bottom: 5 }}
+        contentInset={{ top: 10, bottom: 7.5 }}
       >
         <Grid
           direction={Grid.Direction.HORIZONTAL}
-          svg={{ stroke: 'white', strokeOpacity: 0.1 }}
+          svg={{ stroke: Colors.foregroundSecondary, strokeOpacity: 0.15 }}
         />
       </Chart>
     </View>
     <XAxis
-      style={{ marginTop: 10, height: 20, marginLeft: 35, width:'100%' }}
+      style={{ width:'100%', marginBottom: 5 }}
       data={chartData}
-      formatLabel={(_: any, index: number) => index % 3 === 0 ? chartLabels[index] : ''}
-      contentInset={{ left: 10, right: 10 }}
+      formatLabel={(_: any, index: number) => index % 4 === 0 ? chartLabels[index].slice(0, 2) : ''}
+      contentInset={{ left: 18, right: 0 }}
       svg={{ fontSize: 10, fill: Colors.foregroundSecondary }}
     />
   </View>
