@@ -2,6 +2,7 @@ import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData"
 import Box from "@/components/Box"
 import DayScroller from "@/components/DayScroller"
 import { LineChart } from "@/components/LineChart"
+import TemperatureBox from "@/components/TemperatureBox"
 import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles"
 import { Ionicons } from "@expo/vector-icons"
@@ -52,18 +53,26 @@ export default function Home() {
         </Box>
       </View>
       <View style={[Styles.container, styles.weatherInformationRow]}>
-        <View  style={[Styles.container, styles.boxContainer]}>
+        <View style={[Styles.container, styles.boxContainer]}>
           <Box href="" title="Moon Phase"/>
         </View>
-        <View  style={[Styles.container, styles.boxContainer]}>
+        <View style={[Styles.container, styles.boxContainer]}>
           <Box href="" title="Light Level"/>
         </View>
       </View>
       <View style={[Styles.container, styles.weatherInformationRow]}>
-        <View  style={[Styles.container, styles.boxContainer]}>
-          <Box href="" title="Temperature"/>
+        <View style={[Styles.container, styles.boxContainer]}>
+          <TemperatureBox
+            href=""
+            loading={false}
+            temperatureData={{
+              averageTemperature: 22,
+              highestTemperature: 22,
+              lowestTemperature: 9
+            }}
+          />
         </View>
-        <View  style={[Styles.container, styles.boxContainer]}>
+        <View style={[Styles.container, styles.boxContainer]}>
           <Box href="" title="Precipitation and Wind"/>
         </View>
       </View>
