@@ -1,6 +1,8 @@
 import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData"
 import Box from "@/components/Box"
+import DayScroller from "@/components/DayScroller"
 import { LineChart } from "@/components/LineChart"
+import TemperatureBox from "@/components/TemperatureBox"
 import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles"
 import { Ionicons } from "@expo/vector-icons"
@@ -30,6 +32,8 @@ export default function Home() {
   const [cloudCoverageLabels, setCloudCoverageLabels] = useState<string[]>([])
   const [cloudCoverageLoading, setCloudCoverageLoading] = useState(true)
 
+  const today = new Date()
+
   useEffect(() => {
     fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
   }, [])
@@ -50,12 +54,12 @@ export default function Home() {
         <Text style={styles.locationText}>{savedName || 'Location'}</Text>
       </Pressable>
     </View>
-    {/* Date selector */}
-    <View style={styles.dateSelector}>
-
+    {/* Day selector */}
+    <View style={styles.daySelector}>
+      <DayScroller today={today}/>
     </View>
     {/* Weather information column */}
-    <View style={styles.weatherInformationColumn}>
+    <View style={Styles.informationColumn}>
       {/* Cloud Coverage Box */}
       <View style={[Styles.container, styles.boxContainer]}>
         <Box href="/cloudCover" loading={cloudCoverageLoading} title="Cloud Cover">
@@ -66,18 +70,26 @@ export default function Home() {
         </Box>
       </View>
       <View style={[Styles.container, styles.weatherInformationRow]}>
-        <View  style={[Styles.container, styles.boxContainer]}>
+        <View style={[Styles.container, styles.boxContainer]}>
           <Box href="" title="Moon Phase"/>
         </View>
-        <View  style={[Styles.container, styles.boxContainer]}>
+        <View style={[Styles.container, styles.boxContainer]}>
           <Box href="" title="Light Level"/>
         </View>
       </View>
       <View style={[Styles.container, styles.weatherInformationRow]}>
-        <View  style={[Styles.container, styles.boxContainer]}>
-          <Box href="" title="Temperature"/>
+        <View style={[Styles.container, styles.boxContainer]}>
+          <TemperatureBox
+            href=""
+            loading={false}
+            temperatureData={{
+              averageTemperature: 22,
+              highestTemperature: 22,
+              lowestTemperature: 9
+            }}
+          />
         </View>
-        <View  style={[Styles.container, styles.boxContainer]}>
+        <View style={[Styles.container, styles.boxContainer]}>
           <Box href="" title="Precipitation and Wind"/>
         </View>
       </View>
@@ -90,6 +102,7 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   locationIcon: {
+
   },
   locationText: {
     color: Colors.foregroundPrimary,
@@ -104,14 +117,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 15
   },
-  dateSelector: {
+  daySelector: {
     flex: 3,
-    width: "100%"
+    width: "100%",
+    paddingVertical: 7.5 
   },
   weatherInformationColumn: {
     flex: 11,
     width: "100%",
-    padding: 7.5,
+    paddingHorizontal: 7.5,
+    paddingBottom: 7.5,
     flexDirection: "column"
   },
   weatherInformationRow: {
