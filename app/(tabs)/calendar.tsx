@@ -1,9 +1,15 @@
+import { fetchAstronomyNews } from "@/api/fetchAstronomyNews"
 import Box from "@/components/Box"
+import { useEffect } from "react";
 import { Styles } from "@/constants/Styles";
 import { StyleSheet, FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Calendar() {
+  useEffect(() => {
+    fetchAstronomyNews()
+  }, [])
+
   const data = Array.from({ length: 10 }, (_, i) => ({
     id: i.toString(),
     title: `Item ${i + 1}`,

@@ -13,9 +13,9 @@ export default function Home() {
   const [cloudCoverageLabels, setCloudCoverageLabels] = useState<string[]>([])
   const [cloudCoverageLoading, setCloudCoverageLoading] = useState(true)
 
-  useEffect(() => {
-    fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
-  }, [])
+  // useEffect(() => {
+  //   fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
+  // }, [])
 
   return <SafeAreaView
     edges={["left", "top", "right"]}
