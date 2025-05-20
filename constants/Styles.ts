@@ -5,7 +5,7 @@ export const Styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   background: {
     backgroundColor: Colors.backgroundDark
@@ -18,5 +18,10 @@ export const Styles = StyleSheet.create({
     width: "100%",
     padding: 7.5,
     flexDirection: "column"
+  },
+  headingText: {
+    color: Colors.foregroundPrimary,
+    fontSize: 30,
+    fontWeight: "bold"
   }
 })
