@@ -41,7 +41,7 @@ export default function Home() {
       <DayScroller today={today}/>
     </View>
     {/* Weather information column */}
-    <View style={styles.weatherInformationColumn}>
+    <View style={Styles.informationColumn}>
       {/* Cloud Coverage Box */}
       <View style={[Styles.container, styles.boxContainer]}>
         <Box href="/cloudCover" loading={cloudCoverageLoading} title="Cloud Cover">
