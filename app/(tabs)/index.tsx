@@ -38,7 +38,7 @@ export default function Home() {
 
     </View>
     {/* Weather information column */}
-    <View style={styles.weatherInformationColumn}>
+    <View style={Styles.informationColumn}>
       {/* Cloud Coverage Box */}
       <View style={[Styles.container, styles.boxContainer]}>
         <Box href="/cloudCover" loading={cloudCoverageLoading} title="Cloud Cover">
@@ -90,12 +90,6 @@ const styles = StyleSheet.create({
   dateSelector: {
     flex: 3,
     width: "100%"
-  },
-  weatherInformationColumn: {
-    flex: 11,
-    width: "100%",
-    padding: 7.5,
-    flexDirection: "column"
   },
   weatherInformationRow: {
     flex: 1,

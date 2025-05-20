@@ -12,5 +12,11 @@ export const Styles = StyleSheet.create({
   },
   button: {
       textDecorationLine: "underline",
+  },
+  informationColumn: {
+    flex: 11,
+    width: "100%",
+    padding: 7.5,
+    flexDirection: "column"
   }
 })
