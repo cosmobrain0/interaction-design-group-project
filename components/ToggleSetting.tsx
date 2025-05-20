@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   floatLeft: {
-    width: "70%",
-    fontSize: 30,
+    width: "60%",
+    fontSize: 20,
     color: "white",
   },
   floatRight: {
-    width: "30%"
+    width: "40%"
   }
 })
