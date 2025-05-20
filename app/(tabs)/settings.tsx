@@ -6,23 +6,43 @@ import { Text, View, Image, StyleSheet, Switch } from "react-native"
 import { Picker } from "@react-native-picker/picker"
 import { PickerSetting } from "@/components/PickerSetting";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 enum DateFormat {
-  DDMMYY,
-  DDMMYYYY,
+  DDMMYY = "DDMMYY",
+  DDMMYYYY = "DDMMYYYY",
 };
 
 enum TimeFormat {
-  TwelveHour,
-  TwentyFourHour,
+  TwelveHour = "TWELVEHOUR",
+  TwentyFourHour = "TWENTYFOURHOUR",
 }
 
 enum DegreeUnits {
-  Celsius,
-  Farenheit,
+  Celsius = "CELSIUS",
+  Farenheit = "FARENHEIT",
+}
+
+async function loadData<T>(key: string, defaultValue: T): Promise<T> {
+  try {
+    const value: T = JSON.parse(await AsyncStorage.getItem(key));
+    return value == null ? defaultValue : value;
+  } catch (_) {
+    return defaultValue;
+  }
+}
+
+async function saveData<T>(key: string, value: T): Promise<void> {
+  try {
+    await AsyncStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 export default function Settings() {
+  const savedDateFormat: Promise<DateFormat> = loadData("dateFormat", DateFormat.DDMMYY);
+
   const [settingsLoading, setSettingsLoading] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false); // TODO: read from file or something
   const [newsAlertsEnabled, setNewsAlertsEnabled] = useState(false);
@@ -30,6 +50,8 @@ export default function Settings() {
   const [dateFormat, setDateFormat] = useState(DateFormat.DDMMYY);
   const [timeFormat, setTimeFormat] = useState(TimeFormat.TwelveHour);
   const [degreeUnits, setDegreeUnits] = useState(DegreeUnits.Celsius);
+
+  savedDateFormat.then(savedValue => setDateFormat(savedValue));
 
   const dateFormatOptions = [
     {
@@ -92,6 +114,7 @@ export default function Settings() {
 
   const chooseDateFormat = (newFormat: DateFormat) => {
     setDateFormat(newFormat);
+    saveData("dateFormat", newFormat).then(() => null);
   }
 
   const chooseTimeFormat = (newFormat: TimeFormat) => {
