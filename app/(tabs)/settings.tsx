@@ -25,7 +25,9 @@ enum DegreeUnits {
 
 async function loadData<T>(key: string, defaultValue: T): Promise<T> {
   try {
-    const value: T = JSON.parse(await AsyncStorage.getItem(key));
+    const valueUnparsed = await AsyncStorage.getItem(key);
+    if (valueUnparsed == null) return defaultValue;
+    const value: T | null = JSON.parse(valueUnparsed);
     return value == null ? defaultValue : value;
   } catch (_) {
     return defaultValue;
@@ -42,8 +44,11 @@ async function saveData<T>(key: string, value: T): Promise<void> {
 
 export default function Settings() {
   const savedDateFormat: Promise<DateFormat> = loadData("dateFormat", DateFormat.DDMMYY);
+  const savedTimeFormat: Promise<TimeFormat> = loadData("timeFormat", TimeFormat.TwelveHour);
+  const savedDegreeUnits: Promise<DegreeUnits> = loadData("degreeUnits", DegreeUnits.Celsius);
+  const savedNewsAlertsEnabled: Promise<boolean> = loadData("newsAlertsEnabled", false);
+  const savedCloudCoverAlertsEnabled: Promise<boolean> = loadData("cloudCoverAlertsEnabled", false);
 
-  const [settingsLoading, setSettingsLoading] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false); // TODO: read from file or something
   const [newsAlertsEnabled, setNewsAlertsEnabled] = useState(false);
   const [cloudCoverAlertsEnabled, setCloudCoverAlertsEnabled] = useState(false);
@@ -52,6 +57,16 @@ export default function Settings() {
   const [degreeUnits, setDegreeUnits] = useState(DegreeUnits.Celsius);
 
   savedDateFormat.then(savedValue => setDateFormat(savedValue));
+  savedTimeFormat.then(savedValue => setTimeFormat(savedValue));
+  savedDegreeUnits.then(savedValue => setDegreeUnits(savedValue));
+  savedNewsAlertsEnabled.then(savedValue => {
+    setNewsAlertsEnabled(savedValue);
+    if (savedValue && cloudCoverAlertsEnabled) setNotificationsEnabled(true);
+  });
+  savedCloudCoverAlertsEnabled.then(savedValue => {
+    setCloudCoverAlertsEnabled(savedValue)
+    if (savedValue && newsAlertsEnabled) setNotificationsEnabled(true);
+  });
 
   const dateFormatOptions = [
     {
@@ -95,6 +110,7 @@ export default function Settings() {
   const toggleNewsAlerts = () => {
     setNewsAlertsEnabled(!newsAlertsEnabled);
     const newNewsAlertsEnabled = !newsAlertsEnabled;
+    saveData("newsAlertsEnabled", newNewsAlertsEnabled).then(() => null);
     if (newNewsAlertsEnabled && cloudCoverAlertsEnabled && !notificationsEnabled) {
       setNotificationsEnabled(true);
     } else if ((!newNewsAlertsEnabled || !cloudCoverAlertsEnabled) && notificationsEnabled) {
@@ -105,6 +121,7 @@ export default function Settings() {
   const toggleCloudCoverageAlerts = () => {
     setCloudCoverAlertsEnabled(!cloudCoverAlertsEnabled);
     const newCloudCoverAlertsEnabled = !cloudCoverAlertsEnabled;
+    saveData("cloudCoverAlertsEnabled", newCloudCoverAlertsEnabled).then(() => null);
     if (newsAlertsEnabled && newCloudCoverAlertsEnabled && !notificationsEnabled) {
       setNotificationsEnabled(true);
     } else if ((!newsAlertsEnabled || !newCloudCoverAlertsEnabled) && notificationsEnabled) {
@@ -119,10 +136,12 @@ export default function Settings() {
 
   const chooseTimeFormat = (newFormat: TimeFormat) => {
     setTimeFormat(newFormat);
+    saveData("timeFormat", newFormat).then(() => null);
   }
 
   const chooseDegreeUnits = (newUnits: DegreeUnits) => {
     setDegreeUnits(newUnits);
+    saveData("degreeUnits", newUnits).then(() => null);
   }
 
   return <View style={[Styles.container, Styles.background, ]}>
