@@ -1,15 +1,8 @@
-import { StyleSheet, Text, View } from "react-native"
+import { Styles } from "@/constants/Styles"
+import { Text, View } from "react-native"
 
 export default function Settings() {
-  return <View style={styles.container}>
+  return <View style={[Styles.container, Styles.background]}>
     <Text>Settings</Text>
   </View>
 }
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center"
-    }
-  })
