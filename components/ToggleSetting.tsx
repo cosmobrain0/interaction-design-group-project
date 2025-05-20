@@ -1,31 +1,26 @@
-import { Switch, View, StyleSheet, Text } from "react-native";
+import { Colors } from "@/constants/Colors";
+import { StyleSheet, Switch, Text, View } from "react-native";
 
 export function ToggleSetting({ name, onValueChange, value }: { name: string, onValueChange: ((value: boolean) => Promise<void> | void), value: boolean | undefined}) {
     return (
         <View style={[styles.settingsRow]}>
-          <Text style={[styles.floatLeft]}>
+          <Text style={styles.text}>
             {name}
           </Text>
-          <Switch style={[styles.floatRight]} trackColor={{false: "#333"}} onValueChange={onValueChange} value={value} />
+          <Switch trackColor={{true: Colors.boxLight, false: "#333"}} onValueChange={onValueChange} value={value} />
         </View>
     )
 }
 
 const styles = StyleSheet.create({
   settingsRow: {
-    width: "100%",
-    paddingLeft: 10,
-    paddingRight: 10,
-    flex: 1,
+    margin: 7.5,
     flexDirection: "row",
-    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "space-between"
   },
-  floatLeft: {
-    width: "60%",
+  text: {
     fontSize: 20,
-    color: "white",
-  },
-  floatRight: {
-    width: "40%"
+    color: Colors.foregroundPrimary,
   }
 })

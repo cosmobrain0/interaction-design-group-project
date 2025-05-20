@@ -1,12 +1,9 @@
-import Box from "@/components/Box"
-import { ToggleSetting } from "@/components/ToggleSetting";
-import { Styles } from "@/constants/Styles"
-import React, { useState } from "react";
-import { Text, View, Image, StyleSheet, Switch } from "react-native"
-import { Picker } from "@react-native-picker/picker"
 import { PickerSetting } from "@/components/PickerSetting";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import { ToggleSetting } from "@/components/ToggleSetting";
+import { Styles } from "@/constants/Styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
 
 enum DateFormat {
   DDMMYY = "DDMMYY",
@@ -144,38 +141,19 @@ export default function Settings() {
     saveData("degreeUnits", newUnits).then(() => null);
   }
 
-  return <View style={[Styles.container, Styles.background, ]}>
-    <View style={[Styles.informationColumn, styles.boxDarkBackground]}>
-      <View style={[Styles.container]}>
-        <ToggleSetting name="Notifications" onValueChange={toggleNotifications} value={notificationsEnabled} />
-        <ToggleSetting name="News Alerts" onValueChange={toggleNewsAlerts} value={newsAlertsEnabled} />
-        <ToggleSetting name="Cloud Cover Alerts" onValueChange={toggleCloudCoverageAlerts} value={cloudCoverAlertsEnabled} />
-        <PickerSetting name="Date Format" onValueChange={chooseDateFormat} value={dateFormat} options={dateFormatOptions} />
-        <PickerSetting name="Time Format" onValueChange={chooseTimeFormat} value={timeFormat} options={timeFormatOptions} />
-        <PickerSetting name="Degree Units" onValueChange={chooseDegreeUnits} value={degreeUnits} options={degreeUnitsOptions} />
-      </View>
-    </View>
+  return <View style={[styles.settingsColumn, Styles.background]}>
+    <ToggleSetting name="Notifications" onValueChange={toggleNotifications} value={notificationsEnabled}/>
+    <ToggleSetting name="News Alerts" onValueChange={toggleNewsAlerts} value={newsAlertsEnabled} />
+    <ToggleSetting name="Cloud Cover Alerts" onValueChange={toggleCloudCoverageAlerts} value={cloudCoverAlertsEnabled} />
+    <PickerSetting name="Date Format" onValueChange={chooseDateFormat} value={dateFormat} options={dateFormatOptions} />
+    <PickerSetting name="Time Format" onValueChange={chooseTimeFormat} value={timeFormat} options={timeFormatOptions} />
+    <PickerSetting name="Degree Units" onValueChange={chooseDegreeUnits} value={degreeUnits} options={degreeUnitsOptions} />
   </View>
 }
 
 const styles = StyleSheet.create({
-  settingsRow: {
-    width: "100%",
-    paddingLeft: 10,
-    paddingRight: 10,
+  settingsColumn: {
     flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  boxDarkBackground: {
-    backgroundColor: Colors.boxDark,
-  },
-  floatLeft: {
-    width: "70%",
-    fontSize: 30,
-    color: "white",
-  },
-  floatRight: {
-    width: "30%"
+    padding: 7.5
   }
 })

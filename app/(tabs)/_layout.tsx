@@ -1,6 +1,7 @@
 import { Colors } from "@/constants/Colors"
 import { Ionicons } from "@expo/vector-icons"
 import { Tabs } from "expo-router"
+import { StyleSheet } from "react-native"
 
 export default function TabsLayout() {
   return <Tabs screenOptions={{
@@ -12,7 +13,9 @@ export default function TabsLayout() {
       name="settings"
       options={{
         tabBarShowLabel: false,
-        headerShown: false,
+        headerTitle: "Settings",
+        headerTitleStyle: styles.settingsHeaderTitle,
+        headerStyle: styles.settingsHeader,
         tabBarIcon: ({focused, color}) => (
           <Ionicons
             name={focused ? "settings-sharp" : "settings-outline"}
@@ -52,3 +55,12 @@ export default function TabsLayout() {
     />
   </Tabs>
 }
+
+const styles = StyleSheet.create({
+  settingsHeader: {
+    backgroundColor: Colors.backgroundLight
+  },
+  settingsHeaderTitle: {
+    fontSize: 26
+  }
+})
