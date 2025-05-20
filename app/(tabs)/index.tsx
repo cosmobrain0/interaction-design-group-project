@@ -5,10 +5,27 @@ import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles"
 import { Ionicons } from "@expo/vector-icons"
 import React, { useEffect, useState } from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { useFocusEffect } from '@react-navigation/native';
+import { StyleSheet, Text, View, Pressable} from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default function Home() {
+  const [savedName, setSavedName] = useState<string | null>(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      AsyncStorage.getItem('selectedLocationName')
+        .then((name) => {
+          setSavedName(name);
+          console.log("Refreshed location name:", name);
+        })
+        .catch((err) => console.warn('Failed to load saved location', err));
+    }, [])
+  );
+
+  const router = useRouter();
   const [cloudCoverageData, setCloudCoverageData] = useState<number[]>([])
   const [cloudCoverageLabels, setCloudCoverageLabels] = useState<string[]>([])
   const [cloudCoverageLoading, setCloudCoverageLoading] = useState(true)
@@ -23,15 +40,15 @@ export default function Home() {
   >
     {/* Location selector */}
     <View style={styles.locationSelector}>
-      <View style={styles.locationButton}>
+      <Pressable style={styles.locationButton} onPress={() => router.push("/locationPicker")}>
         <Ionicons
           name="location-sharp"
           color={Colors.foregroundPrimary}
           size={30}
           style={styles.locationIcon}
         />
-        <Text style={styles.locationText}>Location</Text>
-      </View>
+        <Text style={styles.locationText}>{savedName || 'Location'}</Text>
+      </Pressable>
     </View>
     {/* Date selector */}
     <View style={styles.dateSelector}>
