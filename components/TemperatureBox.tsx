@@ -9,8 +9,8 @@ type temperatureData = {
   highestTemperature: number
 }
 
-export default function TemperatureBox({ href, loading=false, temperatureData }:
-  { href: string, loading: boolean, temperatureData: temperatureData }) {
+export default function TemperatureBox({ href, loading=false, data }:
+  { href: string, loading: boolean, data: temperatureData }) {
   return <Box
     title="Temperature"
     href={href}
@@ -19,7 +19,7 @@ export default function TemperatureBox({ href, loading=false, temperatureData }:
     <View style={styles.temperatureColumn}>
       <View style={styles.temperatureContainer}>
         <Text style={styles.temperatureText}>
-          {temperatureData.averageTemperature}°
+          {data.averageTemperature}°
         </Text>
       </View>
       <View style={styles.extremeTemperaturesContainer}>
@@ -31,7 +31,7 @@ export default function TemperatureBox({ href, loading=false, temperatureData }:
             size={24}
           />
           <Text style={styles.extremeTemperatureText}>
-            {temperatureData.highestTemperature}°
+            {data.highestTemperature}°
           </Text>
         </View>
         <View style={styles.extremeTemperatureContainer}>
@@ -42,7 +42,7 @@ export default function TemperatureBox({ href, loading=false, temperatureData }:
             size={24}
           />
           <Text style={styles.extremeTemperatureText}>
-            {temperatureData.lowestTemperature}°
+            {data.lowestTemperature}°
           </Text>
         </View>
       </View>

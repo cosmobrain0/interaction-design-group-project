@@ -1,6 +1,7 @@
 import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData"
 import Box from "@/components/Box"
 import DayScroller from "@/components/DayScroller"
+import LightLevelBox from "@/components/LightLevelBox"
 import { LineChart } from "@/components/LineChart"
 import TemperatureBox from "@/components/TemperatureBox"
 import { Colors } from "@/constants/Colors"
@@ -75,7 +76,14 @@ export default function Home() {
           <Box href="" title="Moon Phase"/>
         </View>
         <View style={styles.boxContainer}>
-          <Box href="" title="Light Level"/>
+          <LightLevelBox
+            href=""
+            loading={false}
+            data={{
+              sunset: new Date(),
+              sunrise: new Date()
+            }}
+          />
         </View>
       </View>
       <View style={styles.weatherInformationRow}>
@@ -83,7 +91,7 @@ export default function Home() {
           <TemperatureBox
             href=""
             loading={false}
-            temperatureData={{
+            data={{
               averageTemperature: 22,
               highestTemperature: 22,
               lowestTemperature: 9
