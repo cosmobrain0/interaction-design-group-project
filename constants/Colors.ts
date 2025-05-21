@@ -5,9 +5,10 @@ export const Colors = {
 
   // colors used in the boxes
   boxDark: "#272745",
-  boxLight: "#474773",
+  boxLight: "#373763",
 
   // text colors
   foregroundPrimary: "#FFFFFF",
-  foregroundSecondary: "#AEAED1"
+  foregroundSecondary: "#AEAED1",
+  foregroundTertiary: "#7E7E91"
 }

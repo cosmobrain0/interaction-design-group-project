@@ -6,12 +6,12 @@ import TemperatureBox from "@/components/TemperatureBox"
 import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles"
 import { Ionicons } from "@expo/vector-icons"
-import React, { useEffect, useState } from "react"
-import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, Text, View, Pressable} from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useFocusEffect } from '@react-navigation/native'
+import { Link } from "expo-router"
+import React, { useEffect, useState } from "react"
+import { StyleSheet, Text, View } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Home() {
   const [savedName, setSavedName] = useState<string | null>(null);
@@ -27,7 +27,6 @@ export default function Home() {
     }, [])
   );
 
-  const router = useRouter();
   const [cloudCoverageData, setCloudCoverageData] = useState<number[]>([])
   const [cloudCoverageLabels, setCloudCoverageLabels] = useState<string[]>([])
   const [cloudCoverageLoading, setCloudCoverageLoading] = useState(true)
@@ -40,26 +39,26 @@ export default function Home() {
 
   return <SafeAreaView
     edges={["left", "top", "right"]}
-    style={[Styles.container, Styles.background, styles.safeAreaView]}
+    style={[Styles.background, styles.safeAreaView]}
   >
     {/* Location selector */}
     <View style={styles.locationSelector}>
-      <Pressable style={styles.locationButton} onPress={() => router.push("/locationPicker")}>
+      <Link href="/locationPicker" style={styles.locationButton}>
         <Ionicons
           name="location-sharp"
           color={Colors.foregroundPrimary}
-          size={30}
+          size={35}
           style={styles.locationIcon}
         />
         <Text style={styles.locationText}>{savedName || 'Location'}</Text>
-      </Pressable>
+      </Link>
     </View>
     {/* Day selector */}
     <View style={styles.daySelector}>
       <DayScroller today={today}/>
     </View>
     {/* Weather information column */}
-    <View style={Styles.informationColumn}>
+    <View style={styles.weatherInformationColumn}>
       {/* Cloud Coverage Box */}
       <View style={[Styles.container, styles.boxContainer]}>
         <Box href="/cloudCover" loading={cloudCoverageLoading} title="Cloud Cover">
@@ -69,16 +68,16 @@ export default function Home() {
           />
         </Box>
       </View>
-      <View style={[Styles.container, styles.weatherInformationRow]}>
-        <View style={[Styles.container, styles.boxContainer]}>
+      <View style={styles.weatherInformationRow}>
+        <View style={styles.boxContainer}>
           <Box href="" title="Moon Phase"/>
         </View>
-        <View style={[Styles.container, styles.boxContainer]}>
+        <View style={styles.boxContainer}>
           <Box href="" title="Light Level"/>
         </View>
       </View>
-      <View style={[Styles.container, styles.weatherInformationRow]}>
-        <View style={[Styles.container, styles.boxContainer]}>
+      <View style={styles.weatherInformationRow}>
+        <View style={styles.boxContainer}>
           <TemperatureBox
             href=""
             loading={false}
@@ -99,28 +98,29 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   safeAreaView: {
-    flexDirection: "column"
+    flex: 1
   },
   locationIcon: {
 
   },
   locationText: {
     color: Colors.foregroundPrimary,
-    fontSize: 30,
+    fontSize: 35,
     fontWeight: "bold"
   },
   locationButton: {
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "center",
   },
   locationSelector: {
-    width: "100%",
-    justifyContent: "center",
-    paddingHorizontal: 15
+    flex: 0.8,
+    flexDirection: "row",
+    paddingHorizontal: 15,
   },
   daySelector: {
     flex: 3,
     width: "100%",
-    paddingVertical: 7.5 
+    paddingVertical: 7.5,
   },
   weatherInformationColumn: {
     flex: 11,
@@ -129,11 +129,18 @@ const styles = StyleSheet.create({
     paddingBottom: 7.5,
     flexDirection: "column"
   },
+  informationColumn: {
+    flex: 11,
+    width: "100%",
+    padding: 7.5,
+    flexDirection: "column"
+  },
   weatherInformationRow: {
     flex: 1,
     flexDirection: "row"
   },
   boxContainer: {
+    flex: 1,
     margin: 7.5
   }
 })
