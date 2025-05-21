@@ -43,14 +43,16 @@ export default function Home() {
   >
     {/* Location selector */}
     <View style={styles.locationSelector}>
-      <Link href="/locationPicker" style={styles.locationButton}>
-        <Ionicons
-          name="location-sharp"
-          color={Colors.foregroundPrimary}
-          size={35}
-          style={styles.locationIcon}
-        />
-        <Text style={styles.locationText}>{savedName || 'Location'}</Text>
+      <Link href="/locationPicker">
+        <View style={styles.locationButton}>
+          <Ionicons
+            name="location-sharp"
+            color={Colors.foregroundPrimary}
+            size={30}
+            style={styles.locationIcon}
+          />
+          <Text style={styles.locationText}>{savedName || 'Location'}</Text>
+        </View>
       </Link>
     </View>
     {/* Day selector */}
