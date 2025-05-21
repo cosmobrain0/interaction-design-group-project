@@ -61,8 +61,7 @@ const styles = StyleSheet.create({
   },
   extremeTemperaturesContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center"
+    flexDirection: "row"
   },
   extremeTemperatureContainer: {
     flex: 1,

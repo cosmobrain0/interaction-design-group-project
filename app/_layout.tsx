@@ -18,7 +18,12 @@ export default function TabsLayout() {
           title: ""
         }}
       />
-      <Stack.Screen name="lineGraphTest" options={{ title: "Line Graph Test" }} />
+      <Stack.Screen
+        name="locationPicker"
+        options={{
+          headerShown: false
+        }}
+      />
     </Stack>
     </ThemeProvider>
   );

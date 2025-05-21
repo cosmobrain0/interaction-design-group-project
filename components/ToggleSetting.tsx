@@ -7,7 +7,7 @@ export function ToggleSetting({ name, onValueChange, value }: { name: string, on
           <Text style={styles.text}>
             {name}
           </Text>
-          <Switch trackColor={{true: Colors.boxLight, false: "#333"}} onValueChange={onValueChange} value={value} />
+          <Switch trackColor={{true: Colors.boxLight, false: Colors.backgroundLight}} onValueChange={onValueChange} value={value} />
         </View>
     )
 }
