@@ -1,15 +1,33 @@
 import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData"
 import Box from "@/components/Box"
 import DayScroller from "@/components/DayScroller"
+import LightLevelBox from "@/components/LightLevelBox"
 import { LineChart } from "@/components/LineChart"
+import TemperatureBox from "@/components/TemperatureBox"
 import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles"
 import { Ionicons } from "@expo/vector-icons"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useFocusEffect } from '@react-navigation/native'
+import { Link } from "expo-router"
 import React, { useEffect, useState } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Home() {
+  const [savedName, setSavedName] = useState<string | null>(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      AsyncStorage.getItem('selectedLocationName')
+        .then((name) => {
+          setSavedName(name);
+          console.log("Refreshed location name:", name);
+        })
+        .catch((err) => console.warn('Failed to load saved location', err));
+    }, [])
+  );
+
   const [cloudCoverageData, setCloudCoverageData] = useState<number[]>([])
   const [cloudCoverageLabels, setCloudCoverageLabels] = useState<string[]>([])
   const [cloudCoverageLoading, setCloudCoverageLoading] = useState(true)
@@ -22,19 +40,21 @@ export default function Home() {
 
   return <SafeAreaView
     edges={["left", "top", "right"]}
-    style={[Styles.container, Styles.background, styles.safeAreaView]}
+    style={[Styles.background, styles.safeAreaView]}
   >
     {/* Location selector */}
     <View style={styles.locationSelector}>
-      <View style={styles.locationButton}>
-        <Ionicons
-          name="location-sharp"
-          color={Colors.foregroundPrimary}
-          size={30}
-          style={styles.locationIcon}
-        />
-        <Text style={styles.locationText}>Location</Text>
-      </View>
+      <Link href="/locationPicker">
+        <View style={styles.locationButton}>
+          <Ionicons
+            name="location-sharp"
+            color={Colors.foregroundPrimary}
+            size={30}
+            style={styles.locationIcon}
+          />
+          <Text style={styles.locationText}>{savedName || 'Location'}</Text>
+        </View>
+      </Link>
     </View>
     {/* Day selector */}
     <View style={styles.daySelector}>
@@ -51,19 +71,34 @@ export default function Home() {
           />
         </Box>
       </View>
-      <View style={[Styles.container, styles.weatherInformationRow]}>
-        <View  style={[Styles.container, styles.boxContainer]}>
+      <View style={styles.weatherInformationRow}>
+        <View style={styles.boxContainer}>
           <Box href="" title="Moon Phase"/>
         </View>
-        <View  style={[Styles.container, styles.boxContainer]}>
-          <Box href="" title="Light Level"/>
+        <View style={styles.boxContainer}>
+          <LightLevelBox
+            href=""
+            loading={false}
+            data={{
+              sunset: new Date(),
+              sunrise: new Date()
+            }}
+          />
         </View>
       </View>
-      <View style={[Styles.container, styles.weatherInformationRow]}>
-        <View  style={[Styles.container, styles.boxContainer]}>
-          <Box href="" title="Temperature"/>
+      <View style={styles.weatherInformationRow}>
+        <View style={styles.boxContainer}>
+          <TemperatureBox
+            href=""
+            loading={false}
+            data={{
+              averageTemperature: 22,
+              highestTemperature: 22,
+              lowestTemperature: 9
+            }}
+          />
         </View>
-        <View  style={[Styles.container, styles.boxContainer]}>
+        <View style={[Styles.container, styles.boxContainer]}>
           <Box href="" title="Precipitation and Wind"/>
         </View>
       </View>
@@ -73,28 +108,29 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   safeAreaView: {
-    flexDirection: "column"
+    flex: 1
   },
   locationIcon: {
 
   },
   locationText: {
     color: Colors.foregroundPrimary,
-    fontSize: 30,
+    fontSize: 35,
     fontWeight: "bold"
   },
   locationButton: {
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "center",
   },
   locationSelector: {
-    width: "100%",
-    justifyContent: "center",
-    paddingHorizontal: 15
+    flex: 0.8,
+    flexDirection: "row",
+    paddingHorizontal: 15,
   },
   daySelector: {
     flex: 3,
     width: "100%",
-    paddingVertical: 7.5 
+    paddingVertical: 7.5,
   },
   weatherInformationColumn: {
     flex: 11,
@@ -103,11 +139,18 @@ const styles = StyleSheet.create({
     paddingBottom: 7.5,
     flexDirection: "column"
   },
+  informationColumn: {
+    flex: 11,
+    width: "100%",
+    padding: 7.5,
+    flexDirection: "column"
+  },
   weatherInformationRow: {
     flex: 1,
     flexDirection: "row"
   },
   boxContainer: {
+    flex: 1,
     margin: 7.5
   }
 })
