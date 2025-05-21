@@ -18,6 +18,7 @@ export const fetchAstronomyNews = async () => {
     const response = await fetch(url, options);
     const result = await response.text();
     console.log(result);
+    console.log("abc");
     return result
   } catch (error) {
     console.error("Failed to fetch cloud cover data", error)

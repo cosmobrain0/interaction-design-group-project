@@ -1,5 +1,6 @@
 import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData"
 import Box from "@/components/Box"
+import DayScroller from "@/components/DayScroller"
 import { LineChart } from "@/components/LineChart"
 import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles"
@@ -12,6 +13,8 @@ export default function Home() {
   const [cloudCoverageData, setCloudCoverageData] = useState<number[]>([])
   const [cloudCoverageLabels, setCloudCoverageLabels] = useState<string[]>([])
   const [cloudCoverageLoading, setCloudCoverageLoading] = useState(true)
+
+  const today = new Date()
 
   // useEffect(() => {
   //   fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
@@ -33,9 +36,9 @@ export default function Home() {
         <Text style={styles.locationText}>Location</Text>
       </View>
     </View>
-    {/* Date selector */}
-    <View style={styles.dateSelector}>
-
+    {/* Day selector */}
+    <View style={styles.daySelector}>
+      <DayScroller today={today}/>
     </View>
     {/* Weather information column */}
     <View style={styles.weatherInformationColumn}>
@@ -73,6 +76,7 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   locationIcon: {
+
   },
   locationText: {
     color: Colors.foregroundPrimary,
@@ -87,14 +91,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 15
   },
-  dateSelector: {
+  daySelector: {
     flex: 3,
-    width: "100%"
+    width: "100%",
+    paddingVertical: 7.5 
   },
   weatherInformationColumn: {
     flex: 11,
     width: "100%",
-    padding: 7.5,
+    paddingHorizontal: 7.5,
+    paddingBottom: 7.5,
     flexDirection: "column"
   },
   weatherInformationRow: {
