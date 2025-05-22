@@ -4,10 +4,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
 
 export default function Box({ children, href, loading, title }: any) {
-  return <Link
-    href={href}
-    style={styles.box}
-  >
+  return <Link href={href} style={styles.box}>
     <View style={styles.titleContainer}>
       <Text style={styles.title}>{title}</Text>
     </View>
