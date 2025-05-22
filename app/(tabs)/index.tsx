@@ -13,6 +13,7 @@ import { Link } from "expo-router"
 import React, { useEffect, useState } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { fetchMoonData } from "@/api/fetchMoonData"
 
 export default function Home() {
   const [savedName, setSavedName] = useState<string | null>(null);
@@ -36,6 +37,13 @@ export default function Home() {
 
   useEffect(() => {
     fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
+  }, [])
+
+  const [moonData, setMoonData] = useState(null)
+  const [moonLoading, setMoonLoading] = useState(true)
+
+  useEffect(() => {
+    fetchMoonData(setMoonData, setMoonLoading)
   }, [])
 
   return <SafeAreaView
@@ -71,9 +79,15 @@ export default function Home() {
           />
         </Box>
       </View>
-      <View style={styles.weatherInformationRow}>
-        <View style={styles.boxContainer}>
-          <Box href="" title="Moon Phase"/>
+      <View style={[Styles.container, styles.weatherInformationRow]}>
+        <View style={[Styles.container, styles.boxContainer]}>
+          <Box href="/moon/details" title="Moon Phase" loading={moonLoading}>
+            <View style={styles.moonContent}>
+              <Text style={styles.phase}>{moonData.phase}</Text>
+              <Text style={styles.info}>Illumination: {moonData.illumination}</Text>
+              <Text style={styles.info}>Age: {moonData.moon_age}</Text>
+            </View>
+          </Box>
         </View>
         <View style={styles.boxContainer}>
           <LightLevelBox
@@ -152,5 +166,21 @@ const styles = StyleSheet.create({
   boxContainer: {
     flex: 1,
     margin: 7.5
+  },
+  moonContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    paddingVertical: 8,
+  },
+  phase: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: Colors.foregroundPrimary,
+    marginBottom: 4,
+  },
+  info: {
+    fontSize: 14,
+    color: Colors.foregroundSecondary,
   }
 })
