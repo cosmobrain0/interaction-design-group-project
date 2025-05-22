@@ -1,31 +1,27 @@
-import { fetchAstronomyNews } from "@/api/fetchAstronomyNews"
+import * as calendarData from "@/assets/data/calendar.json"
 import Box from "@/components/Box"
-import { useEffect } from "react";
+import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
 import { StyleSheet, FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Calendar() {
-  useEffect(() => {
-    fetchAstronomyNews()
-  }, [])
-
-  const data = Array.from({ length: 10 }, (_, i) => ({
-    id: i.toString(),
-    title: `Item ${i + 1}`,
-  }));
+  const data = Object.values(calendarData).slice(0, -1)
 
   const handlePress = (item: { title: any; }) => {
     console.log(`Clicked: ${item.title}`);
   };
 
-  const renderItem = ({ item }: { item: { id: string; title: string } }) => (
+  const renderItem = ({ item }: { item: { id: number, title: string, contents: string } }) => (
     <TouchableOpacity
       style={[styles.newsRow]}
       onPress={() => handlePress(item)}
     >
       <View style={[Styles.container]}>
-        <Box href="" title={item.title}/>
+        <Box href="">
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.contents}>{item.contents}</Text>
+        </Box>
       </View>
     </TouchableOpacity>
   );
@@ -44,7 +40,7 @@ export default function Calendar() {
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
       />
     </View>
   </SafeAreaView>
@@ -64,5 +60,14 @@ const styles = StyleSheet.create({
     paddingRight: 7.5,
     flexDirection: "row",
     margin: 7.5
-  }
+  },
+  title: {
+    color: Colors.foregroundSecondary,
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingBottom: 7.5
+  },
+  contents: {
+    color: Colors.foregroundSecondary
+  },
 })
