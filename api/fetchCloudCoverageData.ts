@@ -37,8 +37,6 @@ export const fetchCloudCoverageData = async (setChartData: any, setChartLabels: 
 
     setChartData(cloudCoverData);
     setChartLabels(timeLabels.slice(0, 24));
-    console.log("Cloud Cover Data:", cloudCoverData);
-    console.log("Time Labels:", timeLabels.slice(0, 24));
   } catch (error) {
     console.error("Failed to fetch cloud cover data", error)
   } finally {
