@@ -78,7 +78,7 @@ export default function Home() {
         </View>
         <View style={styles.boxContainer}>
           <LightLevelBox
-            href=""
+            href="/lightLevel"
             loading={false}
             data={{
               sunset: new Date(),
