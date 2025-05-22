@@ -1,22 +1,31 @@
 import Box from "@/components/Box";
 import { LineChart } from "@/components/LineChart";
+import LocationSelector from "@/components/LocationSelector";
 import { PickerSetting } from "@/components/PickerSetting";
 import { ToggleSetting } from "@/components/ToggleSetting";
 import { Styles } from "@/constants/Styles";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function lightLevel() {
+    const [savedName, setSavedName] = useState(null);
     return (
-        <View style={[Styles.container, Styles.background]}>
-            <View style={[styles.outer]}>
-                <View style={[styles.sunGraph]}>
-                    <Box href="" loading={false} title="Sun Position">
-                        <LineChart targetWidth="70%" targetHeight="100%" chartData={[0, 0.2, 0.1, 0.6]} chartLabels={["a", "b", "c", "d"]} />
-                    </Box>
+        <SafeAreaView
+            edges={["left", "top", "right"]}
+            style={[Styles.background, Styles.safeAreaView]}
+        >
+            <LocationSelector savedName={savedName} />
+            <View style={[Styles.container, Styles.background]}>
+                <View style={[styles.outer]}>
+                    <View style={[styles.sunGraph]}>
+                        <Box href="" loading={false} title="Sun Position">
+                            <LineChart targetWidth="70%" targetHeight="100%" chartData={[0, 0.2, 0.1, 0.6]} chartLabels={["a", "b", "c", "d"]} />
+                        </Box>
+                    </View>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 
