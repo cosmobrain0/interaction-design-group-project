@@ -5,8 +5,6 @@ import { View } from "react-native";
 import { LineChart as Chart, Grid, XAxis, YAxis } from "react-native-svg-charts";
 
 export function LineChart({ chartData, chartLabels }: any) {
-  console.log(chartData)
-
   return <View style={[Styles.container, { width: "100%", height: "100%" } ]}>
     <View style={{ flexDirection: 'row', height: "100%" }}>
       <YAxis
@@ -18,7 +16,7 @@ export function LineChart({ chartData, chartLabels }: any) {
       />
       <Chart
         style={{ flex: 1, paddingLeft: 3 }}
-        data={chartData}
+        data={[...chartData]}
         curve={curveMonotoneX}
         svg={{ stroke: Colors.foregroundPrimary, strokeWidth: 2 }}
         contentInset={{ top: 10, bottom: 7.5 }}
