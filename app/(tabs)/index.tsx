@@ -1,4 +1,5 @@
 import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData"
+import { fetchMoonData, moonDataType } from "@/api/fetchMoonData"
 import Box from "@/components/Box"
 import DayScroller from "@/components/DayScroller"
 import LightLevelBox from "@/components/LightLevelBox"
@@ -13,7 +14,6 @@ import { Link } from "expo-router"
 import React, { useEffect, useState } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { fetchMoonData } from "@/api/fetchMoonData"
 
 export default function Home() {
   const [savedName, setSavedName] = useState<string | null>(null);
@@ -39,7 +39,7 @@ export default function Home() {
     fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
   }, [])
 
-  const [moonData, setMoonData] = useState(null)
+  const [moonData, setMoonData] = useState<moonDataType>({ phase: "", illumination: "", moon_age: ""})
   const [moonLoading, setMoonLoading] = useState(true)
 
   useEffect(() => {

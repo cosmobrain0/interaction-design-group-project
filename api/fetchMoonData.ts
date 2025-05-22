@@ -1,3 +1,10 @@
+
+export type moonDataType = {
+  phase: string,
+  illumination: string,
+  moon_age: string
+}
+
 export const fetchMoonData = async (setMoonData: any, setLoading: any) => {
   try {
     setLoading(true)
@@ -7,6 +14,7 @@ export const fetchMoonData = async (setMoonData: any, setLoading: any) => {
 
     // use only the current date's moonphase
     const todayMoonData = json[3]
+    console.log("hi")
     setMoonData(todayMoonData)
 
   } catch (error) {
