@@ -57,10 +57,13 @@ export default function LocationPicker() {
               };
               setRegion(newRegion);
               setMarker({ latitude: lat, longitude: lng });
+              AsyncStorage.setItem('selectedLocationCoords', JSON.stringify({ lat, lng }))
+                .then(() => console.log('Coordinates saved', { lat, lng }))
+                .catch(err => console.warn('Coordinate save failed', err));
               mapRef.current?.animateToRegion(newRegion, 1000);
             }}
             query={{
-              key: 'AIzaSyCqcMftsnN6EmTssZPOFv6kkT4XGLJ_7_s',
+              key: 'AIzaSyAs1kLToLR4dB6I6bUp3cw5-ni6bv-ojwM',
               language: 'en'
             }}
             minLength={3}
