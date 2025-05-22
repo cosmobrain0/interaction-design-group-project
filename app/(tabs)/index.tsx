@@ -6,14 +6,11 @@ import { LineChart } from "@/components/LineChart"
 import LocationSelector from "@/components/LocationSelector"
 import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox"
 import TemperatureBox from "@/components/TemperatureBox"
-import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles"
-import { Ionicons } from "@expo/vector-icons"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useFocusEffect } from '@react-navigation/native'
-import { Link } from "expo-router"
 import React, { useEffect, useState } from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Home() {
