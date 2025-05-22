@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   temperatureText: {
     marginTop: -8,
     color: Colors.foregroundPrimary,
-    fontSize: 100
+    fontSize: 72
   },
   extremeTemperatureIcon: {
 

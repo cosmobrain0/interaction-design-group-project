@@ -26,14 +26,12 @@ export default function Calendar() {
     </TouchableOpacity>
   );
 
-  return (<SafeAreaView
+  return <SafeAreaView
     edges={["left", "top", "right"]}
     style={[Styles.container, Styles.background]}
   >
     {/* Heading */}
-    <View>
-      <Text style={[Styles.headingText]}>Calendar</Text>
-    </View>
+    <Text style={[Styles.headingText]}>Calendar</Text>
 
     {/* News column */}
     <View style={[styles.newsColumn]}>
@@ -41,28 +39,27 @@ export default function Calendar() {
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => String(item.id)}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   </SafeAreaView>
-  );
 }
 
 const styles = StyleSheet.create({
   newsColumn: {
     flex: 1,
     width: "100%",
-    padding: 7.5,
+    padding: 15,
     flexDirection: "column",
   },
   newsRow: {
     flex: 1,
     height: 150,
-    paddingRight: 7.5,
     flexDirection: "row",
-    margin: 7.5
+    marginBottom: 15
   },
   title: {
-    color: Colors.foregroundSecondary,
+    color: Colors.foregroundPrimary,
     fontSize: 20,
     fontWeight: "bold",
     paddingBottom: 7.5
