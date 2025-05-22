@@ -3,16 +3,14 @@ import Box from "@/components/Box"
 import DayScroller from "@/components/DayScroller"
 import LightLevelBox from "@/components/LightLevelBox"
 import { LineChart } from "@/components/LineChart"
+import LocationPickerButton from "@/components/LocationPickerButton"
 import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox"
 import TemperatureBox from "@/components/TemperatureBox"
-import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles"
-import { Ionicons } from "@expo/vector-icons"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useFocusEffect } from '@react-navigation/native'
-import { Link } from "expo-router"
 import React, { useEffect, useState } from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Home() {
@@ -44,18 +42,8 @@ export default function Home() {
     style={[Styles.background, styles.safeAreaView]}
   >
     {/* Location selector */}
-    <View style={styles.locationSelector}>
-      <Link href="/locationPicker">
-        <View style={styles.locationButton}>
-          <Ionicons
-            name="location-sharp"
-            color={Colors.foregroundPrimary}
-            size={30}
-            style={styles.locationIcon}
-          />
-          <Text style={styles.locationText}>{savedName || 'Location'}</Text>
-        </View>
-      </Link>
+    <View style={styles.locationPicker}>
+      <LocationPickerButton href="" savedName={savedName}/>
     </View>
     {/* Day selector */}
     <View style={styles.daySelector}>
@@ -116,25 +104,13 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1
-  },
-  locationIcon: {
-
-  },
-  locationText: {
-    color: Colors.foregroundPrimary,
-    fontSize: 35,
-    fontWeight: "bold"
-  },
-  locationButton: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  locationSelector: {
+  locationPicker: {
     flex: 0.8,
     flexDirection: "row",
     paddingHorizontal: 15,
+  },
+  safeAreaView: {
+    flex: 1
   },
   daySelector: {
     flex: 3,
