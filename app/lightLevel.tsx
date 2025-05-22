@@ -6,15 +6,16 @@ import { PickerSetting } from "@/components/PickerSetting";
 import { ToggleSetting } from "@/components/ToggleSetting";
 import { Styles } from "@/constants/Styles";
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function lightLevel() {
     const [savedName, setSavedName] = useState(null);
-    let [data, setData] = useState<number[] | null>(null);
+    let [data, setData] = useState<number[][]>([]);
+    let [maxLightLevel, setMaxLightLevel] = useState(0);
     let [loading, setLoading] = useState(true);
     fetchLightLevel().then(x => {
-      setData(x.terrestrialRadiation);
+      setData([x.terrestrialRadiation, x.diffuseRadiation]);
       setLoading(false);
     });
     return (
@@ -26,15 +27,27 @@ export default function lightLevel() {
             <View style={[Styles.container, Styles.background]}>
                 <View style={[styles.outer]}>
                     <View style={[styles.sunGraph]}>
-                        <Box href="" loading={loading} title="Light Level">
-                            <LineChart targetWidth="100%" targetHeight="100%" chartData={data} chartLabels={new Array(24).fill("")} />
+                        <Box href="" loading={loading} title="Diffuse Light Level">
+                            <LineChart targetWidth="100%" targetHeight="100%" chartData={data[1]} chartLabels={new Array(24).fill("").map((_, i) => getHour(i))} />
                         </Box>
                     </View>
+                </View>
+            </View>
+            <View style={[Styles.container, Styles.background]}>
+                <View style={[styles.outer]}>
+                  <Box href="" loading={loading} title="Diffuse Light Level">
+                    <Text>Max light level: {maxLightLevel}</Text>
+                  </Box>
                 </View>
             </View>
         </SafeAreaView>
     )
 }
+
+const getHour = (n: number): string => {
+  if (n >= 10) return `${n}:00`;
+  else return `0${n}:00`;
+};
 
 const styles = StyleSheet.create({
   settingsColumn: {
@@ -46,6 +59,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7.5,
     paddingBottom: 7.5,
     height: 200,
+    color: "white",
   },
   sunGraph: {
     margin: 0.75,

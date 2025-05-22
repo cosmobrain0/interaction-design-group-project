@@ -5,6 +5,11 @@ export const fetchCloudCoverageData = async (setChartData: any, setChartLabels: 
     const json = await response.json()
 
     // use only the first 24 hours of cloud coverage data
+    if (!json.hourly) {
+      console.log("API limit reached!");
+      setLoading(false);
+      return;
+    }
     const data = json.hourly.cloud_cover.slice(0, 24)
     setChartData(data)
 
