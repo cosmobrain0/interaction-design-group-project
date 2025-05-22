@@ -3,6 +3,7 @@ import Box from "@/components/Box"
 import DayScroller from "@/components/DayScroller"
 import LightLevelBox from "@/components/LightLevelBox"
 import { LineChart } from "@/components/LineChart"
+import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox"
 import TemperatureBox from "@/components/TemperatureBox"
 import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles"
@@ -99,7 +100,15 @@ export default function Home() {
           />
         </View>
         <View style={[Styles.container, styles.boxContainer]}>
-          <Box href="" title="Precipitation and Wind"/>
+          <PrecipitationAndWindBox
+            href=""
+            loading={false}
+            data={{
+              precipitationChance: 11,
+              windSpeed: 13,
+              windDirection: 0.445
+            }}
+          />
         </View>
       </View>
     </View>
