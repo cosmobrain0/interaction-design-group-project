@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4
   },
   titleContainer: {
-
+    width: "100%",
   },
   title: {
     color: Colors.foregroundSecondary

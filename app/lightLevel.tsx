@@ -20,7 +20,7 @@ export default function lightLevel() {
                 <View style={[styles.outer]}>
                     <View style={[styles.sunGraph]}>
                         <Box href="" loading={false} title="Sun Position">
-                            <LineChart targetWidth="70%" targetHeight="100%" chartData={[0, 0.2, 0.1, 0.6]} chartLabels={["a", "b", "c", "d"]} />
+                            <LineChart targetWidth="100%" targetHeight="100%" chartData={[0, 0.2, 0.1, 0.6]} chartLabels={["a", "b", "c", "d"]} />
                         </Box>
                     </View>
                 </View>
