@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
 
@@ -22,6 +23,14 @@ export default function TabsLayout() {
         name="locationPicker"
         options={{
           headerShown: false
+        }}
+      />
+      <Stack.Screen
+        name="temperature"
+        options={{
+          title: "Temperature",
+          headerBackButtonDisplayMode: "minimal",
+          headerStyle: { backgroundColor: Colors.backgroundLight }
         }}
       />
     </Stack>

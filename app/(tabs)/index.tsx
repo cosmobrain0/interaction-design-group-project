@@ -78,7 +78,7 @@ export default function Home() {
       <View style={styles.weatherInformationRow}>
         <View style={styles.boxContainer}>
           <TemperatureBox
-            href=""
+            href="/temperature"
             loading={false}
             data={{
               averageTemperature: 22,
