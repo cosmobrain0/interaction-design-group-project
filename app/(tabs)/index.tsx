@@ -33,9 +33,9 @@ export default function Home() {
 
   const today = new Date()
 
-  useEffect(() => {
-    fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
-  }, [])
+  // useEffect(() => {
+  //   fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
+  // }, [])
 
   return <SafeAreaView
     edges={["left", "top", "right"]}

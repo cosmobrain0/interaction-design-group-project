@@ -1,4 +1,5 @@
 import { Colors } from "@/constants/Colors";
+import { Styles } from "@/constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
@@ -12,7 +13,7 @@ export default function LocationPickerButton({ href, savedName }: { href: string
         color={Colors.foregroundPrimary}
         size={30}
       />
-      <Text style={styles.locationText}>{savedName || 'Location'}</Text>
+      <Text style={Styles.headingText}>{savedName || 'Location'}</Text>
     </View>
   </Link>
 }
