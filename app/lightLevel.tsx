@@ -4,6 +4,7 @@ import { LineChart } from "@/components/LineChart";
 import LocationSelector from "@/components/LocationSelector";
 import { PickerSetting } from "@/components/PickerSetting";
 import { ToggleSetting } from "@/components/ToggleSetting";
+import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
 import React, { useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
@@ -13,9 +14,12 @@ export default function lightLevel() {
     const [savedName, setSavedName] = useState(null);
     let [data, setData] = useState<number[][]>([]);
     let [maxLightLevel, setMaxLightLevel] = useState(0);
+    let [minLightLevel, setMinLightLevel] = useState(0);
     let [loading, setLoading] = useState(true);
     fetchLightLevel().then(x => {
       setData([x.terrestrialRadiation, x.diffuseRadiation]);
+      setMaxLightLevel(x.diffuseRadiation.reduce((a, b) => Math.max(a, b)));
+      setMinLightLevel(x.diffuseRadiation.reduce((a, b) => Math.min(a, b)));
       setLoading(false);
     });
     return (
@@ -35,8 +39,11 @@ export default function lightLevel() {
             </View>
             <View style={[Styles.container, Styles.background]}>
                 <View style={[styles.outer]}>
-                  <Box href="" loading={loading} title="Diffuse Light Level">
-                    <Text>Max light level: {maxLightLevel}</Text>
+                  <Box href="" loading={loading} title="Minimum and Maximum light levels">
+                    <View style={[styles.horizontal]}>
+                      <Text style={[styles.info, styles.left]}>Max light level: {maxLightLevel}</Text>
+                      <Text style={[styles.info, styles.right]}>Min light level: {minLightLevel}</Text>
+                    </View>
                   </Box>
                 </View>
             </View>
@@ -65,5 +72,19 @@ const styles = StyleSheet.create({
     margin: 0.75,
     width: "100%",
     height: "100%",
+  },
+  info: {
+    color: Colors.foregroundPrimary,
+  },
+  left: {
+    width: "50%",
+  },
+  right: {
+    width: "50%",
+    textAlign: "right",
+  },
+  horizontal: {
+    flex: 1,
+    flexDirection: "row",
   }
 })
