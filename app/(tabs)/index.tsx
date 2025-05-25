@@ -3,7 +3,7 @@ import Box from "@/components/Box"
 import DayScroller from "@/components/DayScroller"
 import LightLevelBox from "@/components/LightLevelBox"
 import { LineChart } from "@/components/LineChart"
-import LocationPickerButton from "@/components/LocationPickerButton"
+import LocationSelector from "@/components/LocationSelector"
 import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox"
 import TemperatureBox from "@/components/TemperatureBox"
 import { Styles } from "@/constants/Styles"
@@ -14,7 +14,7 @@ import { StyleSheet, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export default function Home() {
-  const [savedName, setSavedName] = useState<string | null>(null);
+  const [savedName, setSavedName] = useState<string | null>(null); // TODO: save savedName using AsyncStorage
 
   useFocusEffect(
     React.useCallback(() => {
@@ -39,12 +39,9 @@ export default function Home() {
 
   return <SafeAreaView
     edges={["left", "top", "right"]}
-    style={[Styles.background, styles.safeAreaView]}
+    style={[Styles.background, Styles.safeAreaView]}
   >
-    {/* Location selector */}
-    <View style={styles.locationPicker}>
-      <LocationPickerButton href="" savedName={savedName}/>
-    </View>
+    <LocationSelector savedName={savedName} />
     {/* Day selector */}
     <View style={styles.daySelector}>
       <DayScroller today={today}/>
@@ -66,7 +63,7 @@ export default function Home() {
         </View>
         <View style={styles.boxContainer}>
           <LightLevelBox
-            href=""
+            href="/lightLevel"
             loading={false}
             data={{
               sunset: new Date(),
@@ -104,11 +101,6 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  locationPicker: {
-    flex: 0.8,
-    flexDirection: "row",
-    paddingHorizontal: 15,
-  },
   safeAreaView: {
     flex: 1
   },
