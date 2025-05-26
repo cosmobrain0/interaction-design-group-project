@@ -4,17 +4,19 @@ import { curveMonotoneX } from "d3-shape";
 import { View } from "react-native";
 import { LineChart as Chart, Grid, XAxis, YAxis } from "react-native-svg-charts";
 
-export function LineChart({ chartData, chartLabels, targetWidth, targetHeight }: any) {
+export function LineChart({ chartData, chartLabels, targetWidth, targetHeight, yMin, yMax }: any) {
   return <View style={[Styles.container, { width: targetWidth ? targetWidth : "100%", height: targetHeight ? targetHeight : "100%" } ]}>
     <View style={{ flexDirection: 'row', height: "100%" }}>
       <YAxis
-        data={chartData}
+        data={[yMin, yMax]}
         contentInset={{ top: 10, bottom: 7.5 }}
         svg={{ fontSize: 10, fill: Colors.foregroundSecondary }}
         style={{ width: 15 }}
         numberOfTicks={5}
       />
       <Chart
+        yMin={yMin}
+        yMax={yMax}
         style={{ flex: 1, paddingLeft: 3 }}
         data={[...chartData]}
         curve={curveMonotoneX}

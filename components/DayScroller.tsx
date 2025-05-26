@@ -1,3 +1,4 @@
+import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet } from "react-native";
 import DayPill from "./DayPill";
@@ -10,7 +11,13 @@ function addDays(date: Date, days: number) {
 
 const daysInAdvance = 7
 
-export default function DayScroller({ today, setDate }: { today: Date, setDate: any }) {
+type DataSetters = {
+  setCloudCoverageData: any,
+  setCloudCoverageLabels: any,
+  setCloudCoverageLoading: any
+}
+
+export default function DayScroller({ today, setDay, dataSetters }: { today: Date, setDay: any, dataSetters: DataSetters }) {
   const [selected, setSelected] = useState<number | null>(0);
 
   return <ScrollView style={styles.dayScroller}
@@ -21,7 +28,13 @@ export default function DayScroller({ today, setDate }: { today: Date, setDate: 
       <Pressable key={day} style={styles.pillContainer}
         onPress={() => {
           setSelected(day)
-          setDate(addDays(today, day))
+          setDay(day)
+          fetchCloudCoverageData(
+            day, 
+            dataSetters.setCloudCoverageData,
+            dataSetters.setCloudCoverageLabels,
+            dataSetters.setCloudCoverageLoading
+          )
         }}
       >
         <DayPill

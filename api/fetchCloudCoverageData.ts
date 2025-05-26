@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchWeatherApi } from 'openmeteo';
 
-export const fetchCloudCoverageData = async (setChartData: any, setChartLabels: any, setLoading: any) => {
+export const fetchCloudCoverageData = async (day: number, setChartData: any, setChartLabels: any, setLoading: any) => {
   try {
+    const hoursOffset = 24 * day
+
     const coordString = await AsyncStorage.getItem('selectedLocationCoords');
     const coords = coordString ? JSON.parse(coordString) : { lat: 52.2, lng: 0.1167 };
 
@@ -33,7 +35,7 @@ export const fetchCloudCoverageData = async (setChartData: any, setChartLabels: 
       throw new Error("Not enough time labels to render chart");
     }
 
-    const cloudCoverData = hourly.variables(0)!.valuesArray()!.slice(0, 24);
+    const cloudCoverData = hourly.variables(0)!.valuesArray()!.slice(hoursOffset, hoursOffset + 24);
 
     setChartData(cloudCoverData);
     setChartLabels(timeLabels.slice(0, 24));
