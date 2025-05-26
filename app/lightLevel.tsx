@@ -1,4 +1,5 @@
 import { fetchLightLevel } from "@/api/fetchLightLevel";
+import { useFocusEffect } from "@react-navigation/native";
 import Box from "@/components/Box";
 import { LineChart } from "@/components/LineChart";
 import LocationSelector from "@/components/LocationSelector";
@@ -16,12 +17,16 @@ export default function lightLevel() {
     let [maxLightLevel, setMaxLightLevel] = useState(0);
     let [minLightLevel, setMinLightLevel] = useState(0);
     let [loading, setLoading] = useState(true);
-    fetchLightLevel().then(x => {
-      setData([x.terrestrialRadiation, x.diffuseRadiation]);
-      setMaxLightLevel(x.diffuseRadiation.reduce((a, b) => Math.max(a, b)));
-      setMinLightLevel(x.diffuseRadiation.reduce((a, b) => Math.min(a, b)));
-      setLoading(false);
-    });
+    useFocusEffect(
+      React.useCallback(() => {
+        fetchLightLevel().then(x => {
+          setData([x.terrestrialRadiation, x.diffuseRadiation]);
+          setMaxLightLevel(x.diffuseRadiation.reduce((a, b) => Math.max(a, b)));
+          setMinLightLevel(x.diffuseRadiation.reduce((a, b) => Math.min(a, b)));
+          setLoading(false);
+        });
+      }, [])
+    );
     return (
         <SafeAreaView
             edges={["left", "top", "right"]}
