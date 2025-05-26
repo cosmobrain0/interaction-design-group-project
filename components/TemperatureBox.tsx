@@ -6,7 +6,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Box from "./Box";
 
 
-export default function TemperatureBox({ href }: { href: string }) {
+export default function TemperatureBox({ href, data }: { href: string, data: any }) {
   const temperature = useContext(WeatherContext)?.temperature
   
   return <Box
@@ -17,7 +17,7 @@ export default function TemperatureBox({ href }: { href: string }) {
     {temperature && <View style={styles.temperatureColumn}>
       <View style={styles.temperatureContainer}>
         <Text style={styles.temperatureText}>
-          {temperature.average}°
+          {data.avgTemperature}°
         </Text>
       </View>
       <View style={styles.extremeTemperaturesContainer}>
@@ -29,7 +29,7 @@ export default function TemperatureBox({ href }: { href: string }) {
             size={24}
           />
           <Text style={styles.extremeTemperatureText}>
-            {temperature.highest}°
+            {data.maxTemperature}°
           </Text>
         </View>
         <View style={styles.extremeTemperatureContainer}>
@@ -40,7 +40,7 @@ export default function TemperatureBox({ href }: { href: string }) {
             size={24}
           />
           <Text style={styles.extremeTemperatureText}>
-            {temperature.lowest}°
+            {data.minTemperature}°
           </Text>
         </View>
       </View>

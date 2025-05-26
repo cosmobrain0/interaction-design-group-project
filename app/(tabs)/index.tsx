@@ -99,6 +99,11 @@ export default function Home() {
         <View style={styles.boxContainer}>
           <TemperatureBox
             href="/temperature"
+            data={{
+              avgTemperature: avgTemperature ?? 0,
+              maxTemperature: maxTemperature ?? 0,
+              minTemperature: minTemperature ?? 0,
+            }}
           />
         </View>
         <View style={[Styles.container, styles.boxContainer]}>
