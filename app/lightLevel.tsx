@@ -1,15 +1,11 @@
 import { fetchLightLevel } from "@/api/fetchLightLevel";
-import { useFocusEffect } from "@react-navigation/native";
 import Box from "@/components/Box";
 import { LineChart } from "@/components/LineChart";
-import LocationSelector from "@/components/LocationSelector";
-import { PickerSetting } from "@/components/PickerSetting";
-import { ToggleSetting } from "@/components/ToggleSetting";
 import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
+import { useFocusEffect } from "@react-navigation/native";
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, Text, View } from "react-native";
 
 export default function lightLevel() {
     const [savedName, setSavedName] = useState(null);
@@ -28,31 +24,27 @@ export default function lightLevel() {
       }, [])
     );
     return (
-        <SafeAreaView
-            edges={["left", "top", "right"]}
-            style={[Styles.background, Styles.safeAreaView]}
+        <View
+            style={[Styles.background, Styles.safeAreaView, { justifyContent: "flex-start" }]}
         >
-            <LocationSelector savedName={savedName} />
-            <View style={[Styles.container, Styles.background]}>
-                <View style={[styles.outer]}>
-                    <View style={[styles.sunGraph]}>
-                        <Box href="" loading={loading} title="Diffuse Light Level">
-                            <LineChart targetWidth="100%" targetHeight="100%" chartData={data[1]} chartLabels={new Array(24).fill("").map((_, i) => getHour(i))} />
-                        </Box>
-                    </View>
+          <View style={styles.settingsColumn}>
+            <View style={[styles.outer]}>
+                <View style={[styles.sunGraph]}>
+                    <Box href="" loading={loading} title="Diffuse Light Level">
+                        <LineChart targetWidth="100%" targetHeight="100%" chartData={data[1]} chartLabels={new Array(24).fill("").map((_, i) => getHour(i))} />
+                    </Box>
                 </View>
             </View>
-            <View style={[Styles.container, Styles.background]}>
-                <View style={[styles.outer]}>
-                  <Box href="" loading={loading} title="Minimum and Maximum light levels">
-                    <View style={[styles.horizontal]}>
-                      <Text style={[styles.info, styles.left]}>Max light level: {maxLightLevel}</Text>
-                      <Text style={[styles.info, styles.right]}>Min light level: {minLightLevel}</Text>
-                    </View>
-                  </Box>
+            <View style={[styles.outer]}>
+              <Box href="" loading={loading} title="Minimum and Maximum light levels">
+                <View style={[styles.horizontal]}>
+                  <Text style={[styles.info, styles.left]}>Max light level: {maxLightLevel}</Text>
+                  <Text style={[styles.info, styles.right]}>Min light level: {minLightLevel}</Text>
                 </View>
+              </Box>
             </View>
-        </SafeAreaView>
+          </View>
+        </View>
     )
 }
 
@@ -66,10 +58,7 @@ const styles = StyleSheet.create({
     padding: 7.5
   },
   outer: {
-    width: "100%",
-    margin: 0.75,
-    paddingHorizontal: 7.5,
-    paddingBottom: 7.5,
+    margin: 7.5,
     height: 200,
     color: "white",
   },

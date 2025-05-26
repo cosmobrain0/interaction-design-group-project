@@ -46,6 +46,15 @@ export default function StackLayout() {
               headerStyle: { backgroundColor: Colors.backgroundLight }
             }}
           />
+          <Stack.Screen
+            name="lightLevel"
+            options={{
+              title: "Light Level",
+              headerBackButtonDisplayMode: "minimal",
+              headerTintColor: Colors.foregroundPrimary,
+              headerStyle: { backgroundColor: Colors.backgroundLight }
+            }}
+          />
         </Stack>
       </ThemeProvider>
     </WeatherContext>
