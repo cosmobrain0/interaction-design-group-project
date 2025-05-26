@@ -25,6 +25,7 @@ export const fetchOtherWeatherData = async (
   setSunset: any,
   setMinTemperature: any,
   setMaxTemperature: any,
+  setHourlyTemperature: any,
   setLoading: any
 ) => {
   try {
@@ -93,6 +94,7 @@ export const fetchOtherWeatherData = async (
 
     setMaxTemperature(convertedMaxTemperature);
     setMinTemperature(convertedMinTemperature);
+    setHourlyTemperature([...daily.variables(0)!.valuesArray()!])
     setPrecipitation(maxPrecipitation);
 
     
