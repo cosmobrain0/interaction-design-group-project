@@ -3,8 +3,8 @@ import { Link } from "expo-router";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
 
-export default function Box({ children, href, loading, title }: any) {
-  return <Link href={href} style={styles.box}>
+export default function Box({ children, href, params, loading, title }: any) {
+  return <Link href={{ pathname: href, params: params }} style={styles.box}>
     <View style={styles.titleContainer}>
       <Text style={styles.title}>{title}</Text>
     </View>

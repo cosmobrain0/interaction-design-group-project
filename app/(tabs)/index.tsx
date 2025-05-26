@@ -79,12 +79,6 @@ export default function Home() {
         <View style={styles.boxContainer}>
           <TemperatureBox
             href="/temperature"
-            loading={false}
-            data={{
-              averageTemperature: 22,
-              highestTemperature: 22,
-              lowestTemperature: 9
-            }}
           />
         </View>
         <View style={[Styles.container, styles.boxContainer]}>

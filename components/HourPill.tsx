@@ -2,29 +2,11 @@ import { Colors } from "@/constants/Colors";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 
-export const dayNumberToDayString = [
-  "Sun",
-  "Mon",
-  "Tue",
-  "Wed",
-  "Thu",
-  "Fri",
-  "Sat"
-]
-
-export function dateNumberToDateString(dateNumber: number) {
-  switch (dateNumber % 10) {
-    case 1:
-      return dateNumber + "st"
-    case 2:
-      return dateNumber + "nd"
-    case 3:
-      return dateNumber + "rd"
-  }
-  return dateNumber + "th"
+function hourNumberToFormattedString(hour: number): string {
+  return String(hour).padStart(2, '0')
 }
 
-export default function DayPill({ icon, day }: { icon: string, day: Date }) {
+export default function HourPill({ icon, text, hour }: { icon: string, text: string, hour: number }) {
   return <View style={styles.pill}>
     <View style={styles.iconContainer}>
       <FontAwesome6
@@ -33,9 +15,9 @@ export default function DayPill({ icon, day }: { icon: string, day: Date }) {
         color={Colors.foregroundPrimary}
       />
     </View>
-    <View style={styles.dayContainer}>
-      <Text style={styles.dayText}>{dayNumberToDayString[day.getDay()]}</Text>
-      <Text style={styles.dayText}>{dateNumberToDateString(day.getDate())}</Text>
+    <View style={styles.dataContainer}>
+      <Text style={styles.dataText}>{text}</Text>
+      <Text style={styles.hourText}>{hourNumberToFormattedString(hour)}</Text>
     </View>
   </View>
 }
@@ -57,11 +39,17 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     paddingBottom: 2.5
   },
-  dayContainer: {
+  dataContainer: {
     flex: 1,
     paddingTop: 2.5
   },
-  dayText: {
+  dataText: {
+    textAlign: "center",
+    color: Colors.foregroundPrimary,
+    fontSize: 35,
+    fontWeight: "bold"
+  },
+  hourText: {
     textAlign: "center",
     color: Colors.foregroundSecondary,
     fontSize: 21,
