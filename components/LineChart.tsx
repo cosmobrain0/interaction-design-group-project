@@ -16,7 +16,7 @@ export function LineChart({ chartData, chartLabels, targetWidth, targetHeight }:
       />
       <Chart
         style={{ flex: 1, paddingLeft: 3 }}
-        data={chartData}
+        data={[...chartData]}
         curve={curveMonotoneX}
         svg={{ stroke: Colors.foregroundPrimary, strokeWidth: 2 }}
         contentInset={{ top: 10, bottom: 7.5 }}
@@ -29,8 +29,12 @@ export function LineChart({ chartData, chartLabels, targetWidth, targetHeight }:
     </View>
     <XAxis
       style={{ width:'100%', marginBottom: 5 }}
-      data={chartData}
-      formatLabel={(_: any, index: number) => index % 4 === 0 ? chartLabels[index].slice(0, 2) : ''}
+      data={chartLabels}
+      formatLabel={(value, index) => {
+        const label = chartLabels?.[index];
+        const result = index % 4 === 0 && typeof label === 'string' ? label.slice(0, 2) : '';
+        return result;
+      }}
       contentInset={{ left: 18, right: 0 }}
       svg={{ fontSize: 10, fill: Colors.foregroundSecondary }}
     />
