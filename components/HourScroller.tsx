@@ -11,7 +11,7 @@ export default function HourScroller({ hourlyData }: { hourlyData: string[] }) {
       <View key={hour} style={styles.pillContainer}>
         <HourPill
           icon="cloud"
-          text={value}
+          text={value + "°"}
           hour={hour}
         />
       </View>

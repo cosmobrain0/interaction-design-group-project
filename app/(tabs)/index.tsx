@@ -41,6 +41,7 @@ export default function Home() {
             setSunsetTime,
             setMaxTemperature,
             setMinTemperature,
+            () => {},
             () => {
               setCloudCoverageLoading(false);
             }

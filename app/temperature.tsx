@@ -1,13 +1,37 @@
+import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
 import { WeatherContext } from "@/api/WeatherContext";
 import { dateNumberToDateString, dayNumberToDayString } from "@/components/DayPill";
 import HourScroller from "@/components/HourScroller";
 import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
-import { useContext } from "react";
+import { useFocusEffect } from "expo-router";
+import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Temperature() {
+  const [avgTemperature, setAvgTemperature] = useState<number | null>(null);
+  const [maxTemperature, setMaxTemperature] = useState<number | null>(null);
+  const [minTemperature, setMinTemperature] = useState<number | null>(null);
+  const [hourlyTemperature, setHourlyTemperature] = useState<number[] | null>(null);
+  
+  useFocusEffect(
+    React.useCallback(() => {
+          // Refresh the line chart data when returning to the index page
+          fetchOtherWeatherData(
+            setAvgTemperature,
+            () => {},
+            () => {},
+            () => {},
+            () => {},
+            setMaxTemperature,
+            setMinTemperature,
+            setHourlyTemperature,
+            () => {}
+          );
+    }, [])
+  );
+
   const { date, temperature } = useContext(WeatherContext)
 
   return date && temperature && <View style={[Styles.background, styles.dataColumn]}>
@@ -15,7 +39,7 @@ export default function Temperature() {
       {dateNumberToDateString(date.getDate())} {dayNumberToDayString[date.getDay()]}
     </Text>
     <Text style={styles.averageTemperatureText}>
-      {temperature.average}°
+      {avgTemperature}°
     </Text>
     <View style={styles.extremeTemperaturesContainer}>
       <View style={styles.extremeTemperatureContainer}>
@@ -26,7 +50,7 @@ export default function Temperature() {
           size={45}
         />
         <Text style={styles.extremeTemperatureText}>
-          {temperature.highest}°
+          {maxTemperature}°
         </Text>
       </View>
       <View style={styles.extremeTemperatureContainer}>
@@ -37,7 +61,7 @@ export default function Temperature() {
           size={45}
         />
         <Text style={styles.extremeTemperatureText}>
-          {temperature.lowest}°
+          {minTemperature}°
         </Text>
       </View>
     </View>
@@ -45,9 +69,9 @@ export default function Temperature() {
 
     </View>
     <View style={styles.hourScroller}>
-      <HourScroller
-        hourlyData={temperature.hourly.map((value) => Math.round(value) + "°")}
-      />
+      {hourlyTemperature && <HourScroller
+        hourlyData={[...hourlyTemperature.map((value) => String(Math.round(value)))]}
+      />}
     </View>
   </View>
 }
