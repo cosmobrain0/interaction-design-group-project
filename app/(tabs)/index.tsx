@@ -8,12 +8,13 @@ import { LineChart } from "@/components/LineChart";
 import LocationSelector from "@/components/LocationSelector";
 import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox";
 import TemperatureBox from "@/components/TemperatureBox";
+import { getMoonIcon } from "@/components/getMoonIcon"
 import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 
@@ -103,6 +104,10 @@ export default function Home() {
           <Box href="/moon/details" title="Moon Phase" loading={moonLoading}>
             <View style={styles.moonContent}>
                 <Text style={styles.phase}>{moonData.phase}</Text>
+              <Image
+              source={getMoonIcon(moonData.phase)}
+              style={styles.icon}
+              />
               <Text style={styles.info}>Illumination: {moonData.illumination}</Text>
               <Text style={styles.info}>Age: {moonData.moon_age}</Text>
             </View>
@@ -191,5 +196,10 @@ const styles = StyleSheet.create({
   info: {
     fontSize: 14,
     color: Colors.foregroundSecondary,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+    resizeMode: "contain"
   }
 })
