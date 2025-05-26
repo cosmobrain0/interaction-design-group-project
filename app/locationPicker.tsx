@@ -63,7 +63,7 @@ export default function LocationPicker() {
               mapRef.current?.animateToRegion(newRegion, 1000);
             }}
             query={{
-              key: 'AIzaSyAs1kLToLR4dB6I6bUp3cw5-ni6bv-ojwM',
+              key: 'AIzaSyBMdzTFSC8XZdPD4vxIDLcEpDKac_H30-0',
               language: 'en'
             }}
             minLength={3}
