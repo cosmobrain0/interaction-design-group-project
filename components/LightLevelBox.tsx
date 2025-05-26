@@ -23,11 +23,9 @@ type lightLevelData = {
 
 async function dateToHourMinutesString(date: Date) {
     const timeFormat = await loadData("timeFormat", "TwentyFourHour");
-    console.log("timeFormat", timeFormat);
     const timeOptions: Intl.DateTimeFormatOptions = timeFormat === "TWELVEHOUR"
       ? { hour: "numeric", minute: "numeric", hour12: true }
       : { hour: "numeric", minute: "numeric", hour12: false };
-    console.log("timeOptions", timeOptions);
     return date.toLocaleTimeString([], timeOptions);
   
 }
