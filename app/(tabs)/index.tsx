@@ -1,6 +1,6 @@
 import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData";
+import { fetchMoonData, moonDataType } from "@/api/fetchMoonData";
 import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
-import { fetchMoonData, moonDataType } from "@/api/fetchMoonData"
 import Box from "@/components/Box";
 import DayScroller from "@/components/DayScroller";
 import LightLevelBox from "@/components/LightLevelBox";
@@ -8,7 +8,7 @@ import { LineChart } from "@/components/LineChart";
 import LocationSelector from "@/components/LocationSelector";
 import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox";
 import TemperatureBox from "@/components/TemperatureBox";
-import { Colors } from "@/constants/Colors"
+import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from '@react-navigation/native';
@@ -19,7 +19,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function Home() {
+  const today = new Date()
+  today.setHours(0)
+  today.setMinutes(0)
+  today.setSeconds(0)
+  today.setMilliseconds(0)
+
   const [savedName, setSavedName] = useState<string | null>(null); 
+  const [date, setDate] = useState<Date | null>(today);
 
   const [avgTemperature, setAvgTemperature] = useState<number | null>(null);
   const [maxTemperature, setMaxTemperature] = useState<number | null>(null);
@@ -60,8 +67,6 @@ export default function Home() {
   const [cloudCoverageLabels, setCloudCoverageLabels] = useState<string[]>([])
   const [cloudCoverageLoading, setCloudCoverageLoading] = useState(true)
 
-  const today = new Date()
-
   useEffect(() => {
     fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
   }, [])
@@ -80,7 +85,7 @@ export default function Home() {
     <LocationSelector savedName={savedName} />
     {/* Day selector */}
     <View style={styles.daySelector}>
-      <DayScroller today={today}/>
+      <DayScroller today={today} setDate={setDate}/>
     </View>
     {/* Weather information column */}
     <View style={styles.weatherInformationColumn}>

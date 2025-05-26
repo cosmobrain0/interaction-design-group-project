@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { Pressable, ScrollView, StyleSheet } from "react-native";
 import DayPill from "./DayPill";
 
 function addDays(date: Date, days: number) {
@@ -7,47 +8,29 @@ function addDays(date: Date, days: number) {
   return newDate
 }
 
-export default function DayScroller({ today }: { today: Date }) {
+const daysInAdvance = 7
+
+export default function DayScroller({ today, setDate }: { today: Date, setDate: any }) {
+  const [selected, setSelected] = useState<number | null>(0);
+
   return <ScrollView style={styles.dayScroller}
     horizontal={true}
     showsHorizontalScrollIndicator={false}
   >
-    <View style={styles.pillContainer}>
-      <DayPill
-        icon="cloud-moon"
-        day={today}
-      />
-    </View>
-    <View style={styles.pillContainer}>
-      <DayPill
-        icon="cloud"
-        day={addDays(today, 1)}
-      />
-    </View>
-    <View style={styles.pillContainer}>
-      <DayPill
-        icon="cloud-moon-rain"
-        day={addDays(today, 2)}
-      />
-    </View>
-    <View style={styles.pillContainer}>
-      <DayPill
-        icon="cloud-moon"
-        day={addDays(today, 3)}
-      />
-    </View>
-    <View style={styles.pillContainer}>
-      <DayPill
-        icon="cloud-moon"
-        day={addDays(today, 4)}
-      />
-    </View>
-    <View style={styles.pillContainer}>
-      <DayPill
-        icon="cloud-moon"
-        day={addDays(today, 5)}
-      />
-    </View>
+    {[...Array(daysInAdvance).keys()].map((day) =>
+      <Pressable key={day} style={styles.pillContainer}
+        onPress={() => {
+          setSelected(day)
+          setDate(addDays(today, day))
+        }}
+      >
+        <DayPill
+          icon="cloud-moon"
+          day={addDays(today, day)}
+          selected={selected == day}
+        />
+      </Pressable>
+    )}
   </ScrollView>
 }
 

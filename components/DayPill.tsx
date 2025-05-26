@@ -24,18 +24,28 @@ export function dateNumberToDateString(dateNumber: number) {
   return dateNumber + "th"
 }
 
-export default function DayPill({ icon, day }: { icon: string, day: Date }) {
-  return <View style={styles.pill}>
+export default function DayPill({ icon, day, selected }:
+  { icon: string, day: Date, selected: boolean }) {
+  return <View
+    style={[
+      styles.pill,
+      { backgroundColor: selected ? Colors.foregroundSecondary : Colors.boxDark }
+    ]}
+  >
     <View style={styles.iconContainer}>
       <FontAwesome6
         name={icon}
         size={45}
-        color={Colors.foregroundPrimary}
+        color={selected ? Colors.backgroundDark : Colors.foregroundPrimary}
       />
     </View>
     <View style={styles.dayContainer}>
-      <Text style={styles.dayText}>{dayNumberToDayString[day.getDay()]}</Text>
-      <Text style={styles.dayText}>{dateNumberToDateString(day.getDate())}</Text>
+      <Text style={[styles.dayText, { color: selected ? Colors.backgroundDark : Colors.foregroundPrimary }]}>
+        {dayNumberToDayString[day.getDay()]}
+        </Text>
+      <Text style={[styles.dayText, { color: selected ? Colors.backgroundDark : Colors.foregroundPrimary }]}>
+        {dateNumberToDateString(day.getDate())}
+        </Text>
     </View>
   </View>
 }
