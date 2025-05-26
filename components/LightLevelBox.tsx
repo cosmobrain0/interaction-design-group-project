@@ -2,14 +2,34 @@ import { Colors } from "@/constants/Colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 import Box from "./Box";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+async function loadData<T>(key: string, defaultValue: T): Promise<T> {
+  try {
+    const valueUnparsed = await AsyncStorage.getItem(key);
+    if (valueUnparsed == null) return defaultValue;
+    const value: T | null = JSON.parse(valueUnparsed);
+    return value == null ? defaultValue : value;
+  } catch (_) {
+    return defaultValue;
+  }
+}
+
 
 type lightLevelData = {
   sunset: Date,
   sunrise: Date
 }
 
-function dateToHourMinutesString(date: Date) {
-  return String(date.getHours()).padStart(2, '0') + ":" + String(date.getMinutes()).padStart(2, '0')
+async function dateToHourMinutesString(date: Date) {
+    const timeFormat = await loadData("timeFormat", "TwentyFourHour");
+    console.log("timeFormat", timeFormat);
+    const timeOptions: Intl.DateTimeFormatOptions = timeFormat === "TWELVEHOUR"
+      ? { hour: "numeric", minute: "numeric", hour12: true }
+      : { hour: "numeric", minute: "numeric", hour12: false };
+    console.log("timeOptions", timeOptions);
+    return date.toLocaleTimeString([], timeOptions);
+  
 }
 
 export default function LightLevelBox({ href, loading, data }:
@@ -51,6 +71,6 @@ const styles = StyleSheet.create({
   },
   lightInfoText: {
     color: Colors.foregroundPrimary,
-    fontSize: 40,
+    fontSize: 35,
   }
 })

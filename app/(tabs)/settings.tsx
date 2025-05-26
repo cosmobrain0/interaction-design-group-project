@@ -43,30 +43,26 @@ async function saveData<T>(key: string, value: T): Promise<void> {
 }
 
 export default function Settings() {
-  const savedDateFormat: Promise<DateFormat> = loadData("dateFormat", DateFormat.DDMMYY);
-  const savedTimeFormat: Promise<TimeFormat> = loadData("timeFormat", TimeFormat.TwelveHour);
-  const savedDegreeUnits: Promise<DegreeUnits> = loadData("degreeUnits", DegreeUnits.Celsius);
-  const savedNewsAlertsEnabled: Promise<boolean> = loadData("newsAlertsEnabled", false);
-  const savedCloudCoverAlertsEnabled: Promise<boolean> = loadData("cloudCoverAlertsEnabled", false);
-
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false); // TODO: read from file or something
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [newsAlertsEnabled, setNewsAlertsEnabled] = useState(false);
   const [cloudCoverAlertsEnabled, setCloudCoverAlertsEnabled] = useState(false);
   const [dateFormat, setDateFormat] = useState(DateFormat.DDMMYY);
   const [timeFormat, setTimeFormat] = useState(TimeFormat.TwelveHour);
   const [degreeUnits, setDegreeUnits] = useState(DegreeUnits.Celsius);
 
-  savedDateFormat.then(savedValue => setDateFormat(savedValue));
-  savedTimeFormat.then(savedValue => setTimeFormat(savedValue));
-  savedDegreeUnits.then(savedValue => setDegreeUnits(savedValue));
-  savedNewsAlertsEnabled.then(savedValue => {
-    setNewsAlertsEnabled(savedValue);
-    if (savedValue && cloudCoverAlertsEnabled) setNotificationsEnabled(true);
-  });
-  savedCloudCoverAlertsEnabled.then(savedValue => {
-    setCloudCoverAlertsEnabled(savedValue)
-    if (savedValue && newsAlertsEnabled) setNotificationsEnabled(true);
-  });
+  React.useEffect(() => {
+    loadData("dateFormat", DateFormat.DDMMYY).then(setDateFormat);
+    loadData("timeFormat", TimeFormat.TwelveHour).then(setTimeFormat);
+    loadData("degreeUnits", DegreeUnits.Celsius).then(setDegreeUnits);
+    loadData("newsAlertsEnabled", false).then((value) => {
+      setNewsAlertsEnabled(value);
+      if (value && cloudCoverAlertsEnabled) setNotificationsEnabled(true);
+    });
+    loadData("cloudCoverAlertsEnabled", false).then((value) => {
+      setCloudCoverAlertsEnabled(value);
+      if (value && newsAlertsEnabled) setNotificationsEnabled(true);
+    });
+  }, []);
 
   const dateFormatOptions = [
     {

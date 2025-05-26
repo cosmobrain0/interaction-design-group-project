@@ -1,6 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchWeatherApi } from 'openmeteo';
 
+
+
+async function loadData<T>(key: string, defaultValue: T): Promise<T> {
+  try {
+    const valueUnparsed = await AsyncStorage.getItem(key);
+    if (valueUnparsed == null) return defaultValue;
+    const value: T | null = JSON.parse(valueUnparsed);
+    return value == null ? defaultValue : value;
+  } catch (_) {
+    return defaultValue;
+  }
+}
+
+
+
+
 export const fetchOtherWeatherData = async (
   setTemperature: any,
   setPrecipitation: any,
@@ -64,16 +80,28 @@ export const fetchOtherWeatherData = async (
       return sum / arr.length;
     };
 
-    const avgTemperature = Math.round(average(temperature));
+    let avgTemperature = Math.round(average(temperature));
+    let convertedMaxTemperature = maxTemperature;
+    let convertedMinTemperature = minTemperature;
+
+    const unit = await loadData("degreeUnits", "Celsius");
+    const isFahrenheit = unit === "FARENHEIT";
+    if (isFahrenheit) {
+      avgTemperature = Math.round(avgTemperature * 9 / 5 + 32);
+      convertedMaxTemperature = Math.round(maxTemperature * 9 / 5 + 32);
+      convertedMinTemperature = Math.round(minTemperature * 9 / 5 + 32);
+    }
 
     setMaxTemperature(maxTemperature);
     setMinTemperature(minTemperature);
     setHourlyTemperature(hourly.variables(0)!.valuesArray()!.subarray(0, 24));
     setPrecipitation(maxPrecipitation);
 
+    
+
     await AsyncStorage.setItem('avgTemperature', avgTemperature.toString());
-    await AsyncStorage.setItem('maxTemperature', maxTemperature.toString());
-    await AsyncStorage.setItem('minTemperature', minTemperature.toString());
+    await AsyncStorage.setItem('maxTemperature', convertedMaxTemperature.toString());
+    await AsyncStorage.setItem('minTemperature', convertedMinTemperature.toString());
     await AsyncStorage.setItem('maxPrecipitationProbability', maxPrecipitation.toString());
 
     const avgPrecipitation = Math.round(average(precipitation) * 100);
@@ -86,6 +114,14 @@ export const fetchOtherWeatherData = async (
     const sunsetVar = daily.variables(4)!;
     const sunrise = new Date((Number(sunriseVar.valuesInt64(0)) + utcOffsetSeconds) * 1000);
     const sunset = new Date((Number(sunsetVar.valuesInt64(0)) + utcOffsetSeconds) * 1000);
+
+    const timeFormat = await loadData("timeFormat", "TwentyFourHour");
+    console.log("timeFormat", timeFormat);
+    const timeOptions: Intl.DateTimeFormatOptions = timeFormat === "TWELVEHOUR"
+      ? { hour: "numeric", minute: "numeric", hour12: true }
+      : { hour: "numeric", minute: "numeric", hour12: false };
+    console.log("timeOptions", timeOptions);
+
 
     setTemperature(avgTemperature);
     await AsyncStorage.setItem('temperatureData', JSON.stringify(temperature));
