@@ -94,7 +94,7 @@ export const fetchOtherWeatherData = async (
 
     setMaxTemperature(convertedMaxTemperature);
     setMinTemperature(convertedMinTemperature);
-    setHourlyTemperature([...daily.variables(0)!.valuesArray()!])
+    setHourlyTemperature([...hourly.variables(0)!.valuesArray()!.subarray(0, 24)])
     setPrecipitation(maxPrecipitation);
 
     
