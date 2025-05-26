@@ -14,8 +14,10 @@ import React, { useEffect, useState } from "react"
 import { StyleSheet, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
+
+
 export default function Home() {
-  const [savedName, setSavedName] = useState<string | null>(null); // TODO: save savedName using AsyncStorage
+  const [savedName, setSavedName] = useState<string | null>(null); 
 
   const [avgTemperature, setAvgTemperature] = useState<number | null>(null);
   const [maxTemperature, setMaxTemperature] = useState<number | null>(null);
