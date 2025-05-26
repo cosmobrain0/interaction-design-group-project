@@ -22,6 +22,9 @@
     },
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
   }
 }

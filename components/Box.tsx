@@ -3,14 +3,17 @@ import { Link } from "expo-router";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
 
-export default function Box({ children, href, params, loading, title }: any) {
-  return <Link href={{ pathname: href, params: params }} style={styles.box}>
+export default function Box({ children, href, loading, title, style }: any) {
+  return <Link
+    href={href}
+    style={style ? style : styles.box}
+  >
     <View style={styles.titleContainer}>
       <Text style={styles.title}>{title}</Text>
     </View>
     <View style={styles.childrenContainer}>
       { loading ? (
-        <ActivityIndicator size="large" color="#888" />
+        <ActivityIndicator size="large" color={Colors.foregroundSecondary} />
       ) : children }
     </View>
   </Link>
@@ -30,7 +33,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4
   },
   titleContainer: {
-
+    width: "100%",
   },
   title: {
     color: Colors.foregroundSecondary
@@ -38,6 +41,7 @@ const styles = StyleSheet.create({
   childrenContainer: {
     flex: 7,
     width: "100%",
-    height: "90%"
+    height: "90%",
+    justifyContent: "center"
   }
 })

@@ -1,20 +1,29 @@
-import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData"
-import Box from "@/components/Box"
-import DayScroller from "@/components/DayScroller"
-import LightLevelBox from "@/components/LightLevelBox"
-import { LineChart } from "@/components/LineChart"
-import LocationPickerButton from "@/components/LocationPickerButton"
-import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox"
-import TemperatureBox from "@/components/TemperatureBox"
-import { Styles } from "@/constants/Styles"
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { useFocusEffect } from '@react-navigation/native'
-import React, { useEffect, useState } from "react"
-import { StyleSheet, View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData";
+import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
+import Box from "@/components/Box";
+import DayScroller from "@/components/DayScroller";
+import LightLevelBox from "@/components/LightLevelBox";
+import { LineChart } from "@/components/LineChart";
+import LocationSelector from "@/components/LocationSelector";
+import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox";
+import TemperatureBox from "@/components/TemperatureBox";
+import { Styles } from "@/constants/Styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
-  const [savedName, setSavedName] = useState<string | null>(null);
+  const [savedName, setSavedName] = useState<string | null>(null); // TODO: save savedName using AsyncStorage
+
+  const [avgTemperature, setAvgTemperature] = useState<number | null>(null);
+  const [maxTemperature, setMaxTemperature] = useState<number | null>(null);
+  const [minTemperature, setMinTemperature] = useState<number | null>(null);
+  const [avgPrecipitation, setAvgPrecipitation] = useState<number | null>(null);
+  const [avgWind, setAvgWind] = useState<number | null>(null);
+  const [sunriseTime, setSunriseTime] = useState<Date | null>(null);
+  const [sunsetTime, setSunsetTime] = useState<Date | null>(null);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -22,6 +31,20 @@ export default function Home() {
         .then((name) => {
           setSavedName(name);
           console.log("Refreshed location name:", name);
+          // Refresh the line chart data when returning to the index page
+          fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading);
+          fetchOtherWeatherData(
+            setAvgTemperature,
+            setAvgPrecipitation,
+            setAvgWind,
+            setSunriseTime,
+            setSunsetTime,
+            setMaxTemperature,
+            setMinTemperature,
+            () => {
+              setCloudCoverageLoading(false);
+            }
+          );
         })
         .catch((err) => console.warn('Failed to load saved location', err));
     }, [])
@@ -39,12 +62,9 @@ export default function Home() {
 
   return <SafeAreaView
     edges={["left", "top", "right"]}
-    style={[Styles.background, styles.safeAreaView]}
+    style={[Styles.background, Styles.safeAreaView]}
   >
-    {/* Location selector */}
-    <View style={styles.locationPicker}>
-      <LocationPickerButton href="" savedName={savedName}/>
-    </View>
+    <LocationSelector savedName={savedName} />
     {/* Day selector */}
     <View style={styles.daySelector}>
       <DayScroller today={today}/>
@@ -66,11 +86,11 @@ export default function Home() {
         </View>
         <View style={styles.boxContainer}>
           <LightLevelBox
-            href=""
+            href="/lightLevel"
             loading={false}
             data={{
-              sunset: new Date(),
-              sunrise: new Date()
+              sunrise: sunriseTime ?? new Date(),
+              sunset: sunsetTime ?? new Date()
             }}
           />
         </View>
@@ -86,8 +106,8 @@ export default function Home() {
             href=""
             loading={false}
             data={{
-              precipitationChance: 11,
-              windSpeed: 13,
+              precipitationChance: avgPrecipitation ?? 0,
+              windSpeed: avgWind ?? 0,
               windDirection: 0.445
             }}
           />
@@ -98,11 +118,6 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  locationPicker: {
-    flex: 0.8,
-    flexDirection: "row",
-    paddingHorizontal: 15,
-  },
   safeAreaView: {
     flex: 1
   },
