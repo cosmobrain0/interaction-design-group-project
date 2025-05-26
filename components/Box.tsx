@@ -13,7 +13,7 @@ export default function Box({ children, href, loading, title, style }: any) {
     </View>
     <View style={styles.childrenContainer}>
       { loading ? (
-        <ActivityIndicator size="large" color="#888" />
+        <ActivityIndicator size="large" color={Colors.foregroundSecondary} />
       ) : children }
     </View>
   </Link>
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   childrenContainer: {
     flex: 7,
     width: "100%",
-    height: "90%"
+    height: "90%",
+    justifyContent: "center"
   }
 })
