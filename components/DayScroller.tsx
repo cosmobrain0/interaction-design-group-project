@@ -1,4 +1,5 @@
 import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData";
+import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet } from "react-native";
 import DayPill from "./DayPill";
@@ -15,6 +16,13 @@ type DataSetters = {
   setCloudCoverageData: any,
   setCloudCoverageLabels: any,
   setCloudCoverageLoading: any
+  setAvgTemperature: any,
+  setAvgPrecipitation: any,
+  setAvgWind: any,
+  setSunriseTime: any,
+  setSunsetTime: any,
+  setMaxTemperature: any,
+  setMinTemperature: any
 }
 
 export default function DayScroller({ today, setDay, dataSetters }: { today: Date, setDay: any, dataSetters: DataSetters }) {
@@ -34,6 +42,18 @@ export default function DayScroller({ today, setDay, dataSetters }: { today: Dat
             dataSetters.setCloudCoverageData,
             dataSetters.setCloudCoverageLabels,
             dataSetters.setCloudCoverageLoading
+          )
+          fetchOtherWeatherData(
+            day,
+            dataSetters.setAvgTemperature,
+            dataSetters.setAvgPrecipitation,
+            dataSetters.setAvgWind,
+            dataSetters.setSunriseTime,
+            dataSetters.setSunsetTime,
+            dataSetters.setMaxTemperature,
+            dataSetters.setMinTemperature,
+            () => {},
+            () => {},
           )
         }}
       >

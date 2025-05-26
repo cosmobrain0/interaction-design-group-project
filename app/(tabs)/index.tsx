@@ -42,13 +42,14 @@ export default function Home() {
           // Refresh the line chart data when returning to the index page
           fetchCloudCoverageData(day, setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading);
           fetchOtherWeatherData(
+            day,
             setAvgTemperature,
             setAvgPrecipitation,
             setAvgWind,
             setSunriseTime,
             setSunsetTime,
-            setMaxTemperature,
             setMinTemperature,
+            setMaxTemperature,
             () => {},
             () => {
               setCloudCoverageLoading(false);
@@ -84,7 +85,14 @@ export default function Home() {
       <DayScroller today={today} setDay={setDay} dataSetters={{
         setCloudCoverageData: setCloudCoverageData,
         setCloudCoverageLabels: setCloudCoverageLabels,
-        setCloudCoverageLoading: setCloudCoverageLoading
+        setCloudCoverageLoading: setCloudCoverageLoading,
+        setAvgTemperature: setAvgTemperature,
+        setAvgPrecipitation: setAvgPrecipitation,
+        setAvgWind: setAvgWind,
+        setSunriseTime: setSunriseTime,
+        setSunsetTime: setSunsetTime,
+        setMaxTemperature: setMaxTemperature,
+        setMinTemperature: setMinTemperature,
       }}/>
     </View>
     {/* Weather information column */}

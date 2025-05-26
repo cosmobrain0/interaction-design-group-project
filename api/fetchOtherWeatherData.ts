@@ -18,6 +18,7 @@ async function loadData<T>(key: string, defaultValue: T): Promise<T> {
 
 
 export const fetchOtherWeatherData = async (
+  day: number,
   setTemperature: any,
   setPrecipitation: any,
   setWind: any,
@@ -29,6 +30,8 @@ export const fetchOtherWeatherData = async (
   setLoading: any
 ) => {
   try {
+    const hoursOffset = day * 24
+
     const coordString = await AsyncStorage.getItem('selectedLocationCoords');
     let coords = { lat: 52.2, lng: 0.1167 };
     try {
@@ -64,13 +67,13 @@ export const fetchOtherWeatherData = async (
       throw new Error('Missing hourly or daily data');
     }
 
-    const temperature = hourly.variables(0)!.valuesArray()!.subarray(0, 24);
-    const precipitation = hourly.variables(1)!.valuesArray()!.subarray(0, 24);
-    const wind = hourly.variables(2)!.valuesArray()!.subarray(0, 24);
+    const temperature = hourly.variables(0)!.valuesArray()!.subarray(hoursOffset, hoursOffset + 24);
+    const precipitation = hourly.variables(1)!.valuesArray()!.subarray(hoursOffset, hoursOffset + 24);
+    const wind = hourly.variables(2)!.valuesArray()!.subarray(hoursOffset, hoursOffset + 24);
 
-    const maxTemperature = Math.round(daily.variables(0)!.valuesArray()![0]);
-    const minTemperature = Math.round(daily.variables(1)!.valuesArray()![0]);
-    const maxPrecipitation = Math.round(daily.variables(2)!.valuesArray()![0]);
+    const maxTemperature = Math.round(Math.max(...temperature));
+    const minTemperature = Math.round(Math.min(...temperature));
+    const maxPrecipitation = Math.round(Math.max(...precipitation));
 
     const average = (arr: Float32Array) => {
       let sum = 0;
@@ -94,7 +97,7 @@ export const fetchOtherWeatherData = async (
 
     setMaxTemperature(convertedMaxTemperature);
     setMinTemperature(convertedMinTemperature);
-    setHourlyTemperature([...hourly.variables(0)!.valuesArray()!.subarray(0, 24)])
+    setHourlyTemperature([...hourly.variables(0)!.valuesArray()!.subarray(hoursOffset, hoursOffset + 24)])
     setPrecipitation(maxPrecipitation);
 
     

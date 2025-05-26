@@ -1,8 +1,8 @@
 import { Colors } from "@/constants/Colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StyleSheet, Text, View } from "react-native";
 import Box from "./Box";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 async function loadData<T>(key: string, defaultValue: T): Promise<T> {
   try {
@@ -23,11 +23,9 @@ type lightLevelData = {
 
 async function dateToHourMinutesString(date: Date) {
     const timeFormat = await loadData("timeFormat", "TwentyFourHour");
-    console.log("timeFormat", timeFormat);
     const timeOptions: Intl.DateTimeFormatOptions = timeFormat === "TWELVEHOUR"
       ? { hour: "numeric", minute: "numeric", hour12: true }
       : { hour: "numeric", minute: "numeric", hour12: false };
-    console.log("timeOptions", timeOptions);
     return date.toLocaleTimeString([], timeOptions);
   
 }
