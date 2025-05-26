@@ -1,5 +1,6 @@
 import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData";
 import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
+import { fetchMoonData, moonDataType } from "@/api/fetchMoonData"
 import Box from "@/components/Box";
 import DayScroller from "@/components/DayScroller";
 import LightLevelBox from "@/components/LightLevelBox";
@@ -7,11 +8,12 @@ import { LineChart } from "@/components/LineChart";
 import LocationSelector from "@/components/LocationSelector";
 import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox";
 import TemperatureBox from "@/components/TemperatureBox";
+import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
@@ -24,6 +26,7 @@ export default function Home() {
   const [avgWind, setAvgWind] = useState<number | null>(null);
   const [sunriseTime, setSunriseTime] = useState<Date | null>(null);
   const [sunsetTime, setSunsetTime] = useState<Date | null>(null);
+
 
   useFocusEffect(
     React.useCallback(() => {
@@ -61,6 +64,13 @@ export default function Home() {
     fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
   }, [])
 
+  const [moonData, setMoonData] = useState<moonDataType>({ phase: "", illumination: "", moon_age: ""})
+  const [moonLoading, setMoonLoading] = useState(true)
+
+  useEffect(() => {
+    fetchMoonData(setMoonData, setMoonLoading)
+  }, [])
+
   return <SafeAreaView
     edges={["left", "top", "right"]}
     style={[Styles.background, Styles.safeAreaView]}
@@ -83,7 +93,13 @@ export default function Home() {
       </View>
       <View style={styles.weatherInformationRow}>
         <View style={styles.boxContainer}>
-          <Box href="" title="Moon Phase"/>
+          <Box href="/moon/details" title="Moon Phase" loading={moonLoading}>
+            <View style={styles.moonContent}>
+                <Text style={styles.phase}>{moonData.phase}</Text>
+              <Text style={styles.info}>Illumination: {moonData.illumination}</Text>
+              <Text style={styles.info}>Age: {moonData.moon_age}</Text>
+            </View>
+          </Box>
         </View>
         <View style={styles.boxContainer}>
           <LightLevelBox
@@ -152,5 +168,21 @@ const styles = StyleSheet.create({
   boxContainer: {
     flex: 1,
     margin: 7.5
+  },
+    moonContent: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    paddingVertical: 8,
+  },
+  phase: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: Colors.foregroundPrimary,
+    marginBottom: 4,
+  },
+  info: {
+    fontSize: 14,
+    color: Colors.foregroundSecondary,
   }
 })
