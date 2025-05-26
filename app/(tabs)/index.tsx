@@ -1,18 +1,18 @@
-import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData"
+import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData";
 import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
-import Box from "@/components/Box"
-import DayScroller from "@/components/DayScroller"
-import LightLevelBox from "@/components/LightLevelBox"
-import { LineChart } from "@/components/LineChart"
-import LocationSelector from "@/components/LocationSelector"
-import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox"
-import TemperatureBox from "@/components/TemperatureBox"
-import { Styles } from "@/constants/Styles"
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { useFocusEffect } from '@react-navigation/native'
-import React, { useEffect, useState } from "react"
-import { StyleSheet, View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import Box from "@/components/Box";
+import DayScroller from "@/components/DayScroller";
+import LightLevelBox from "@/components/LightLevelBox";
+import { LineChart } from "@/components/LineChart";
+import LocationSelector from "@/components/LocationSelector";
+import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox";
+import TemperatureBox from "@/components/TemperatureBox";
+import { Styles } from "@/constants/Styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Home() {
   const [savedName, setSavedName] = useState<string | null>(null); // TODO: save savedName using AsyncStorage
@@ -98,13 +98,7 @@ export default function Home() {
       <View style={styles.weatherInformationRow}>
         <View style={styles.boxContainer}>
           <TemperatureBox
-            href=""
-            loading={false}
-            data={{
-              averageTemperature: avgTemperature ?? 0,
-              highestTemperature: maxTemperature ?? 0,
-              lowestTemperature: minTemperature ?? 0
-            }}
+            href="/temperature"
           />
         </View>
         <View style={[Styles.container, styles.boxContainer]}>
