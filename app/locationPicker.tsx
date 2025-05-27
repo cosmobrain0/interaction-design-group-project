@@ -2,23 +2,50 @@ import { Colors } from '@/constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { router } from 'expo-router';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, View } from 'react-native';
 import 'react-native-get-random-values';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { Marker } from 'react-native-maps';
 
+export const fetchStoredCoords = async(setInitCoords: any) => {
+  try {
+    let coords = { lat: 52.2044132, lng: 0.1056739}
+    const coordString = await AsyncStorage.getItem("selectedLocationCoords")
+    if (coordString) {
+      const parsed = coordString ? JSON.parse(coordString) : null;
+      if (!parsed || typeof parsed.lat !== 'number' || typeof parsed.lng !== 'number') {
+        console.warn("Invalid parsed coordinates, using default");
+      } else {
+        coords.lat = parsed.lat
+        coords.lng = parsed.lng
+        console.log("Coordinates loaded", coords)
+      }
+    }
+    setInitCoords(coords)
+    return coords
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 export default function LocationPicker() {
+  const [initCoords, setInitCoords] = useState<{ lat: number, lng: number}>({ lat: 52.2044132, lng: 0.1056739});
+
+  useEffect(() => {
+    fetchStoredCoords(setInitCoords)
+  }, [])
+
   const [region, setRegion] = useState({
-    latitude: 52.2044132,
-    longitude: 0.1056739,
+    latitude: initCoords.lat,
+    longitude: initCoords.lng,
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
   });
 
   const [marker, setMarker] = useState({
-    latitude: 52.2044132,
-    longitude: 0.1056739,
+    latitude: initCoords.lat,
+    longitude: initCoords.lng,
   });
 
   const mapRef = useRef<MapView>(null);
@@ -82,11 +109,16 @@ export default function LocationPicker() {
           style={[styles.map]}
           region={region}
           onRegionChangeComplete={setRegion}
-          // onPress={(event) => {
-          //   const { latitude, longitude } = event.nativeEvent.coordinate;
-          //   setMarker({ latitude, longitude });
-          //   setRegion({ ...region, latitude, longitude });
-          // }}
+          onPress={(event) => {
+            const { latitude, longitude } = event.nativeEvent.coordinate;
+            setMarker({ latitude, longitude });
+            setRegion({ ...region, latitude, longitude });
+            const lat = latitude
+            const lng = longitude
+            AsyncStorage.setItem('selectedLocationCoords', JSON.stringify({ lat, lng }))
+                .then(() => console.log('Coordinates saved', { lat, lng }))
+                .catch(err => console.warn('Coordinate save failed', err));
+          }}
         >
           <Marker coordinate={marker} />
         </MapView>

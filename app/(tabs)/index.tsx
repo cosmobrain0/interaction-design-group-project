@@ -31,8 +31,7 @@ export default function Home() {
   const [avgWind, setAvgWind] = useState<number | null>(null);
   const [sunriseTime, setSunriseTime] = useState<Date | null>(null);
   const [sunsetTime, setSunsetTime] = useState<Date | null>(null);
-
-
+  
   useFocusEffect(
     React.useCallback(() => {
       AsyncStorage.getItem('selectedLocationName')
