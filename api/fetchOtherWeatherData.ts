@@ -16,7 +16,20 @@ async function loadData<T>(key: string, defaultValue: T): Promise<T> {
 
 
 
-
+/**
+ * Fetches a large amount of data from an API at once, and calls different callbacks with
+ * different pieces of data so that the data can be handled individually
+ * @param day the day we are interested in
+ * @param setTemperature callback to pass the average temperature to
+ * @param setPrecipitation callback to pass the average precipitation to
+ * @param setWind callback to pass the average wind to
+ * @param setSunrise callback to pass the sunrise time to
+ * @param setSunset callback to pass the sunset time to
+ * @param setMinTemperature callback to pass the minimum temperature to
+ * @param setMaxTemperature callback to pass the maximum temperature to
+ * @param setHourlyTemperature callback to pass the hour-by-hour temperature forecast to
+ * @param setLoading callback to call when starting to load data and when data has successfully finished loading
+ */
 export const fetchOtherWeatherData = async (
   day: number,
   setTemperature: any,

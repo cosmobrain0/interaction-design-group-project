@@ -1,6 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchWeatherApi } from 'openmeteo';
 
+/**
+ * Loads cloud coverage data for a specific day and passes it to a chart (or something else) using the provided callbacks
+ * @param day the day to get coverage for
+ * @param setChartData the callback to pass cloud coverage percentages to
+ * @param setChartLabels the callback to pass labels for the chart to
+ * @param setLoading the callback which allows a component relying on this async function to be told when the function is loading new data and when it is done
+ */
 export const fetchCloudCoverageData = async (day: number, setChartData: any, setChartLabels: any, setLoading: any) => {
   try {
     const hoursOffset = 24 * day
