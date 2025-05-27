@@ -1,25 +1,28 @@
 import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData";
+import { fetchMoonData, moonDataType } from "@/api/fetchMoonData";
 import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
-import { fetchMoonData, moonDataType } from "@/api/fetchMoonData"
 import Box from "@/components/Box";
 import DayScroller from "@/components/DayScroller";
 import LightLevelBox from "@/components/LightLevelBox";
 import { LineChart } from "@/components/LineChart";
 import LocationSelector from "@/components/LocationSelector";
+import MoonBox from "@/components/MoonBox";
 import PrecipitationAndWindBox from "@/components/PrecipitationAndWindBox";
 import TemperatureBox from "@/components/TemperatureBox";
-import { Colors } from "@/constants/Colors"
 import { Styles } from "@/constants/Styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 
 
 export default function Home() {
+  const today = new Date()
+
   const [savedName, setSavedName] = useState<string | null>(null); 
+  const [day, setDay] = useState<number>(0);
 
   const [avgTemperature, setAvgTemperature] = useState<number | null>(null);
   const [maxTemperature, setMaxTemperature] = useState<number | null>(null);
@@ -37,15 +40,16 @@ export default function Home() {
           setSavedName(name);
           console.log("Refreshed location name:", name);
           // Refresh the line chart data when returning to the index page
-          fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading);
+          fetchCloudCoverageData(day, setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading);
           fetchOtherWeatherData(
+            day,
             setAvgTemperature,
             setAvgPrecipitation,
             setAvgWind,
             setSunriseTime,
             setSunsetTime,
-            setMaxTemperature,
             setMinTemperature,
+            setMaxTemperature,
             () => {},
             () => {
               setCloudCoverageLoading(false);
@@ -60,10 +64,8 @@ export default function Home() {
   const [cloudCoverageLabels, setCloudCoverageLabels] = useState<string[]>([])
   const [cloudCoverageLoading, setCloudCoverageLoading] = useState(true)
 
-  const today = new Date()
-
   useEffect(() => {
-    fetchCloudCoverageData(setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
+    fetchCloudCoverageData(day, setCloudCoverageData, setCloudCoverageLabels, setCloudCoverageLoading)
   }, [])
 
   const [moonData, setMoonData] = useState<moonDataType>({ phase: "", illumination: "", moon_age: ""})
@@ -80,7 +82,18 @@ export default function Home() {
     <LocationSelector savedName={savedName} />
     {/* Day selector */}
     <View style={styles.daySelector}>
-      <DayScroller today={today}/>
+      <DayScroller today={today} setDay={setDay} dataSetters={{
+        setCloudCoverageData: setCloudCoverageData,
+        setCloudCoverageLabels: setCloudCoverageLabels,
+        setCloudCoverageLoading: setCloudCoverageLoading,
+        setAvgTemperature: setAvgTemperature,
+        setAvgPrecipitation: setAvgPrecipitation,
+        setAvgWind: setAvgWind,
+        setSunriseTime: setSunriseTime,
+        setSunsetTime: setSunsetTime,
+        setMaxTemperature: setMaxTemperature,
+        setMinTemperature: setMinTemperature,
+      }}/>
     </View>
     {/* Weather information column */}
     <View style={styles.weatherInformationColumn}>
@@ -88,6 +101,8 @@ export default function Home() {
       <View style={[Styles.container, styles.boxContainer]}>
         <Box href="/cloudCover" loading={cloudCoverageLoading} title="Cloud Cover">
           <LineChart
+            yMin={0}
+            yMax={100}
             chartData={cloudCoverageData}
             chartLabels={cloudCoverageLabels}
           />
@@ -95,13 +110,11 @@ export default function Home() {
       </View>
       <View style={styles.weatherInformationRow}>
         <View style={styles.boxContainer}>
-          <Box href="/moon/details" title="Moon Phase" loading={moonLoading}>
-            <View style={styles.moonContent}>
-                <Text style={styles.phase}>{moonData.phase}</Text>
-              <Text style={styles.info}>Illumination: {moonData.illumination}</Text>
-              <Text style={styles.info}>Age: {moonData.moon_age}</Text>
-            </View>
-          </Box>
+          <MoonBox
+            href=""
+            loading={moonLoading}
+            data={moonData}
+          />
         </View>
         <View style={styles.boxContainer}>
           <LightLevelBox
@@ -171,20 +184,4 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 7.5
   },
-    moonContent: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "flex-start",
-    paddingVertical: 8,
-  },
-  phase: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: Colors.foregroundPrimary,
-    marginBottom: 4,
-  },
-  info: {
-    fontSize: 14,
-    color: Colors.foregroundSecondary,
-  }
 })

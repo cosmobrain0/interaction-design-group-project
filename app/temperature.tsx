@@ -1,15 +1,15 @@
 import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
-import { WeatherContext } from "@/api/WeatherContext";
-import { dateNumberToDateString, dayNumberToDayString } from "@/components/DayPill";
 import HourScroller from "@/components/HourScroller";
 import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
-import { useFocusEffect } from "expo-router";
-import React, { useContext, useState } from "react";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Temperature() {
+  const day = Number(useLocalSearchParams().day)
+
   const [avgTemperature, setAvgTemperature] = useState<number | null>(null);
   const [maxTemperature, setMaxTemperature] = useState<number | null>(null);
   const [minTemperature, setMinTemperature] = useState<number | null>(null);
@@ -19,6 +19,7 @@ export default function Temperature() {
     React.useCallback(() => {
           // Refresh the line chart data when returning to the index page
           fetchOtherWeatherData(
+            day,
             setAvgTemperature,
             () => {},
             () => {},
@@ -32,12 +33,7 @@ export default function Temperature() {
     }, [])
   );
 
-  const { date, temperature } = useContext(WeatherContext)
-
-  return date && temperature && <View style={[Styles.background, styles.dataColumn]}>
-    <Text>
-      {dateNumberToDateString(date.getDate())} {dayNumberToDayString[date.getDay()]}
-    </Text>
+  return <View style={[Styles.background, styles.dataColumn]}>
     <Text style={styles.averageTemperatureText}>
       {avgTemperature}°
     </Text>

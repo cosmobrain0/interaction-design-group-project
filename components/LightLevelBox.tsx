@@ -1,8 +1,8 @@
 import { Colors } from "@/constants/Colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StyleSheet, Text, View } from "react-native";
 import Box from "./Box";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 async function loadData<T>(key: string, defaultValue: T): Promise<T> {
   try {
