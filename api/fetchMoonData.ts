@@ -5,16 +5,17 @@ export type moonDataType = {
 }
 
 export const fetchMoonData = async (day: number, setMoonData: any, setLoading: any) => {
+  let response;
   try {
     setLoading(true)
-    const response = await fetch("https://api.viewbits.com/v1/moonphase")
+    response = await fetch("https://api.viewbits.com/v1/moonphase")
     const json = await response.json()
 
     const todayMoonData = json[day]
     setMoonData(todayMoonData)
 
   } catch (error) {
-    console.error("Failed to fetch moon data", error)
+    console.error("Failed to fetch moon data", error, await response?.text())
   } finally {
     setLoading(false)
   }
