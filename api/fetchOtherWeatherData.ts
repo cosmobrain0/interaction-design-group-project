@@ -39,7 +39,6 @@ export const fetchOtherWeatherData = async (
       if (!parsed || typeof parsed.lat !== 'number' || typeof parsed.lng !== 'number') {
         console.warn("Invalid parsed coordinates, using default");
         // Early return if parsed result is invalid
-        return;
       } else {
         coords = parsed;
       }
