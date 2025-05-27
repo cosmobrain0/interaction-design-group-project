@@ -1,4 +1,5 @@
 import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import HourScroller from "@/components/HourScroller";
 import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
@@ -7,31 +8,49 @@ import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+
+async function loadData<T>(key: string, defaultValue: T): Promise<T> {
+  try {
+    const valueUnparsed = await AsyncStorage.getItem(key);
+    if (valueUnparsed == null) return defaultValue;
+    const value: T | null = JSON.parse(valueUnparsed);
+    return value == null ? defaultValue : value;
+  } catch (_) {
+    return defaultValue;
+  }
+}
+
 export default function Temperature() {
-  const day = Number(useLocalSearchParams().day)
+  const [day, setDay] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchDay = async () => {
+      const storedDay = await loadData("selectedDay", 0);
+      setDay(Number(storedDay));
+    };
+    fetchDay();
+  }, []);
+
 
   const [avgTemperature, setAvgTemperature] = useState<number | null>(null);
   const [maxTemperature, setMaxTemperature] = useState<number | null>(null);
   const [minTemperature, setMinTemperature] = useState<number | null>(null);
   const [hourlyTemperature, setHourlyTemperature] = useState<number[] | null>(null);
   
-  useEffect(
-    React.useCallback(() => {
-      fetchOtherWeatherData(
-        day,
-        setAvgTemperature,
-        () => {},
-        () => {},
-        () => {},
-        () => {},
-        setMinTemperature,
-        setMaxTemperature,
-        setHourlyTemperature,
-        () => {}
-      );
-    }, [])
-  );
-
+  useEffect(() => {
+    fetchOtherWeatherData(
+      day,
+      setAvgTemperature,
+      () => {},
+      () => {},
+      () => {},
+      () => {},
+      setMinTemperature,
+      setMaxTemperature,
+      setHourlyTemperature,
+      () => {}
+    );
+  }, [day]);
   return <View style={[Styles.background, styles.dataColumn]}>
     <Text style={styles.averageTemperatureText}>
       {avgTemperature}°

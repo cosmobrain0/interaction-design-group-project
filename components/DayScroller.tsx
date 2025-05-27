@@ -4,11 +4,20 @@ import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet } from "react-native";
 import DayPill from "./DayPill";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function addDays(date: Date, days: number) {
   const newDate = new Date(date)
   newDate.setDate(date.getDate() + days)
   return newDate
+}
+
+async function saveData<T>(key: string, value: T): Promise<void> {
+  try {
+    await AsyncStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 const daysInAdvance = 7
@@ -39,7 +48,9 @@ export default function DayScroller({ today, setDay, dataSetters }: { today: Dat
       <Pressable key={day} style={styles.pillContainer}
         onPress={() => {
           setSelected(day)
+          
           setDay(day)
+          saveData("selectedDay", day)
           fetchCloudCoverageData(
             day, 
             dataSetters.setCloudCoverageData,

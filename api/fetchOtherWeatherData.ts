@@ -115,8 +115,8 @@ export const fetchOtherWeatherData = async (
 
     const sunriseVar = daily.variables(3)!;
     const sunsetVar = daily.variables(4)!;
-    const sunrise = new Date((Number(sunriseVar.valuesInt64(0)) + utcOffsetSeconds) * 1000);
-    const sunset = new Date((Number(sunsetVar.valuesInt64(0)) + utcOffsetSeconds) * 1000);
+    const sunrise = new Date((Number(sunriseVar.valuesInt64(day)) + utcOffsetSeconds) * 1000);
+    const sunset = new Date((Number(sunsetVar.valuesInt64(day)) + utcOffsetSeconds) * 1000);
 
     const timeFormat = await loadData("timeFormat", "TwentyFourHour");
     const timeOptions: Intl.DateTimeFormatOptions = timeFormat === "TWELVEHOUR"

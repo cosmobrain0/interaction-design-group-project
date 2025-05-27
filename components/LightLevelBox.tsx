@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
   },
   lightInfoText: {
     color: Colors.foregroundPrimary,
-    fontSize: 35,
+    fontSize: 30,
   }
 })
