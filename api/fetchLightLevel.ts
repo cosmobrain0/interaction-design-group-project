@@ -1,6 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchWeatherApi } from 'openmeteo';
 
+/**
+ * fetches light information from an API
+ * @returns Different information about the light level over the current day
+ */
 export const fetchLightLevel = async () => {
   const coordString = await AsyncStorage.getItem('selectedLocationCoords');
   const coords = coordString ? JSON.parse(coordString) : { lat: 52.52, lng: 13.41 };

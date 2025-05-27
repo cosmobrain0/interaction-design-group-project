@@ -18,6 +18,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 
 
+/**
+ * Main page component showing an overview
+ * of many different kinds of data, including
+ * temperature, wind, and precipitation
+ */
 export default function Home() {
   const today = new Date()
 

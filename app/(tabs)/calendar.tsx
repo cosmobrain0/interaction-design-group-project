@@ -5,6 +5,10 @@ import { Styles } from "@/constants/Styles";
 import { StyleSheet, FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context"
 
+/**
+ * Component for the calendar page,
+ * showing a list of events with dates, titles and descriptions
+ */
 export default function Calendar() {
   const data = Object.values(calendarData).slice(0, -1)
 

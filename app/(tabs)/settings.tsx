@@ -42,6 +42,11 @@ async function saveData<T>(key: string, value: T): Promise<void> {
   }
 }
 
+/**
+ * Component for the settings page,
+ * allowing the user to change things such as notification settings,
+ * temperature units and date formats
+ */
 export default function Settings() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [newsAlertsEnabled, setNewsAlertsEnabled] = useState(false);
