@@ -8,34 +8,39 @@ import 'react-native-get-random-values';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import MapView, { Marker } from 'react-native-maps';
 
-export const fetchStoredCoords = async(setInitCoords: any) => {
+
+const initCoords = { lat: 52.2044132, lng: 0.1056739 }
+
+
+export const fetchSavedCoords = async(setRegion: any, setMarker: any) => {
   try {
-    let coords = { lat: 52.2044132, lng: 0.1056739}
+    let coords = initCoords
     const coordString = await AsyncStorage.getItem("selectedLocationCoords")
     if (coordString) {
       const parsed = coordString ? JSON.parse(coordString) : null;
       if (!parsed || typeof parsed.lat !== 'number' || typeof parsed.lng !== 'number') {
         console.warn("Invalid parsed coordinates, using default");
       } else {
-        coords.lat = parsed.lat
-        coords.lng = parsed.lng
+        coords = parsed
         console.log("Coordinates loaded", coords)
       }
     }
-    setInitCoords(coords)
-    return coords
+    setRegion({
+      latitude: coords.lat,
+      longitude: coords.lng,
+      latitudeDelta: 0.1,
+      longitudeDelta: 0.1
+    })
+    setMarker({
+      latitude: coords.lat,
+      longitude: coords.lng,
+    })
   } catch (e) {
     console.error(e)
   }
 }
 
 export default function LocationPicker() {
-  const [initCoords, setInitCoords] = useState<{ lat: number, lng: number}>({ lat: 52.2044132, lng: 0.1056739});
-
-  useEffect(() => {
-    fetchStoredCoords(setInitCoords)
-  }, [])
-
   const [region, setRegion] = useState({
     latitude: initCoords.lat,
     longitude: initCoords.lng,
@@ -47,6 +52,10 @@ export default function LocationPicker() {
     latitude: initCoords.lat,
     longitude: initCoords.lng,
   });
+
+  useEffect(() => {
+    fetchSavedCoords(setRegion, setMarker)
+  }, [])
 
   const mapRef = useRef<MapView>(null);
 
