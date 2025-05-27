@@ -2,6 +2,11 @@ import { Colors } from "@/constants/Colors";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
 
+/**
+ * Component for the cloud coverage,
+ * implmemented using a WebView to get
+ * accurate data from the Met Office
+ */
 export default function CloudCover() {
   return <SafeAreaView style={styles.webviewContainer}>
       <View style={styles.webviewWrapper}>
