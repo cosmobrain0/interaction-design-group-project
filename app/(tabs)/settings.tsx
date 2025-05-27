@@ -98,32 +98,40 @@ export default function Settings() {
   ];
 
   const toggleNotifications = () => {
-    setNotificationsEnabled(!notificationsEnabled);
-    setNewsAlertsEnabled(!notificationsEnabled);
-    setCloudCoverAlertsEnabled(!notificationsEnabled);
-  }
+    const newNotificationsEnabled = !notificationsEnabled;
+    setNotificationsEnabled(newNotificationsEnabled);
+
+    if (!newNotificationsEnabled) {
+      setNewsAlertsEnabled(false);
+      setCloudCoverAlertsEnabled(false);
+      saveData("newsAlertsEnabled", false);
+      saveData("cloudCoverAlertsEnabled", false);
+    }
+  };
 
   const toggleNewsAlerts = () => {
-    setNewsAlertsEnabled(!newsAlertsEnabled);
     const newNewsAlertsEnabled = !newsAlertsEnabled;
-    saveData("newsAlertsEnabled", newNewsAlertsEnabled).then(() => null);
-    if (newNewsAlertsEnabled && cloudCoverAlertsEnabled && !notificationsEnabled) {
+    setNewsAlertsEnabled(newNewsAlertsEnabled);
+    saveData("newsAlertsEnabled", newNewsAlertsEnabled);
+
+    if (newNewsAlertsEnabled || cloudCoverAlertsEnabled) {
       setNotificationsEnabled(true);
-    } else if ((!newNewsAlertsEnabled || !cloudCoverAlertsEnabled) && notificationsEnabled) {
+    } else {
       setNotificationsEnabled(false);
     }
-  }
+  };
 
   const toggleCloudCoverageAlerts = () => {
-    setCloudCoverAlertsEnabled(!cloudCoverAlertsEnabled);
     const newCloudCoverAlertsEnabled = !cloudCoverAlertsEnabled;
-    saveData("cloudCoverAlertsEnabled", newCloudCoverAlertsEnabled).then(() => null);
-    if (newsAlertsEnabled && newCloudCoverAlertsEnabled && !notificationsEnabled) {
+    setCloudCoverAlertsEnabled(newCloudCoverAlertsEnabled);
+    saveData("cloudCoverAlertsEnabled", newCloudCoverAlertsEnabled);
+
+    if (newsAlertsEnabled || newCloudCoverAlertsEnabled) {
       setNotificationsEnabled(true);
-    } else if ((!newsAlertsEnabled || !newCloudCoverAlertsEnabled) && notificationsEnabled) {
+    } else {
       setNotificationsEnabled(false);
     }
-  }
+  };
 
   const chooseDateFormat = (newFormat: DateFormat) => {
     setDateFormat(newFormat);
