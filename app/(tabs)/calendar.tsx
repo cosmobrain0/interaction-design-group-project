@@ -10,7 +10,10 @@ import { SafeAreaView } from "react-native-safe-area-context"
  * showing a list of events with dates, titles and descriptions
  */
 export default function Calendar() {
-  const data = Object.values(calendarData).slice(0, -1)
+  const fullData = Object.values(calendarData).slice(0, -1)
+  const today = new Date()
+  const curIdx = fullData.findIndex((x) => {return new Date(x.date) > today})
+  const data = fullData.slice(curIdx > 0 ? curIdx - 1: curIdx)
 
   const handlePress = (item: { title: any; }) => {
     console.log(`Clicked: ${item.title}`);

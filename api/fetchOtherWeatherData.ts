@@ -16,20 +16,7 @@ async function loadData<T>(key: string, defaultValue: T): Promise<T> {
 
 
 
-/**
- * Fetches a large amount of data from an API at once, and calls different callbacks with
- * different pieces of data so that the data can be handled individually
- * @param day the day we are interested in
- * @param setTemperature callback to pass the average temperature to
- * @param setPrecipitation callback to pass the average precipitation to
- * @param setWind callback to pass the average wind to
- * @param setSunrise callback to pass the sunrise time to
- * @param setSunset callback to pass the sunset time to
- * @param setMinTemperature callback to pass the minimum temperature to
- * @param setMaxTemperature callback to pass the maximum temperature to
- * @param setHourlyTemperature callback to pass the hour-by-hour temperature forecast to
- * @param setLoading callback to call when starting to load data and when data has successfully finished loading
- */
+
 export const fetchOtherWeatherData = async (
   day: number,
   setTemperature: any,
@@ -51,6 +38,8 @@ export const fetchOtherWeatherData = async (
       const parsed = coordString ? JSON.parse(coordString) : null;
       if (!parsed || typeof parsed.lat !== 'number' || typeof parsed.lng !== 'number') {
         console.warn("Invalid parsed coordinates, using default");
+        // Early return if parsed result is invalid
+        return;
       } else {
         coords = parsed;
       }
@@ -128,13 +117,6 @@ export const fetchOtherWeatherData = async (
     const sunsetVar = daily.variables(4)!;
     const sunrise = new Date((Number(sunriseVar.valuesInt64(day)) + utcOffsetSeconds) * 1000);
     const sunset = new Date((Number(sunsetVar.valuesInt64(day)) + utcOffsetSeconds) * 1000);
-
-    const timeFormat = await loadData("timeFormat", "TwentyFourHour");
-    const timeOptions: Intl.DateTimeFormatOptions = timeFormat === "TWELVEHOUR"
-      ? { hour: "numeric", minute: "numeric", hour12: true }
-      : { hour: "numeric", minute: "numeric", hour12: false };
-
-
 
     setTemperature(avgTemperature);
     await AsyncStorage.setItem('temperatureData', JSON.stringify(temperature));

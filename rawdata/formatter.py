@@ -1,4 +1,5 @@
 import pandas as pd
+import datetime
 
 
 def format(file: str):
@@ -23,13 +24,36 @@ def format(file: str):
         else:
             block.append(line.strip())
     blocks.append(block)
+
+    months = {
+        "Jan": 1,
+        "Feb": 2,
+        "Mar": 3,
+        "Apr": 4,
+        "May": 5,
+        "Jun": 6,
+        "June": 6,
+        "Jul": 7,
+        "Aug": 8,
+        "Sep": 9,
+        "Oct": 10,
+        "Nov": 11,
+        "Dec": 12
+    }
     for i in range(len(blocks)):
-        blocks[i] = [blocks[i][0], blocks[i][3]]
+        date = blocks[i][0].split(":")[0].split("/")[0].split()
+        datestr = f"2025-{pad(str(months[date[0]]))}-{pad(date[1])}"
+        blocks[i] = [datestr, blocks[i][0], blocks[i][3]]
     return blocks
+
+def pad(x):
+    if len(x) == 1:
+        return "0" + x
+    return x
 
 if __name__ == "__main__":
     data = format("rawdata/rawcalendar.txt")
-    df = pd.DataFrame(data, columns=["title", "contents"])
+    df = pd.DataFrame(data, columns=["date", "title", "contents"])
     df = df.reset_index(names=["id"]).transpose()
     df.to_json("assets/data/calendar.json")
     
