@@ -23,14 +23,6 @@ async function loadData<T>(key: string, defaultValue: T): Promise<T> {
 export default function Temperature() {
   const [day, setDay] = useState<number>(0);
 
-  useEffect(() => {
-    const fetchDay = async () => {
-      const storedDay = await loadData("selectedDay", 0);
-      setDay(Number(storedDay));
-    };
-    fetchDay();
-  }, []);
-
 
   const [avgTemperature, setAvgTemperature] = useState<number | null>(null);
   const [maxTemperature, setMaxTemperature] = useState<number | null>(null);
@@ -38,6 +30,7 @@ export default function Temperature() {
   const [hourlyTemperature, setHourlyTemperature] = useState<number[] | null>(null);
   
   useEffect(() => {
+    console.log("Running fetch weather data effect");
     fetchOtherWeatherData(
       day,
       setAvgTemperature,
@@ -49,8 +42,20 @@ export default function Temperature() {
       setMaxTemperature,
       setHourlyTemperature,
       () => {}
-    );
+    ).then(x => {
+      console.log(x); 
+    });
   }, [day]);
+
+  useEffect(() => {
+    console.log("Running fetch day effect");
+    const fetchDay = async () => {
+      const storedDay = await loadData("selectedDay", 0);
+      setDay(Number(storedDay));
+    };
+    fetchDay().then(() => {});
+  }, []);
+
   return <View style={[Styles.background, styles.dataColumn]}>
     <Text style={styles.averageTemperatureText}>
       {avgTemperature}°
