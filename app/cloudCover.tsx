@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import WebView from "react-native-webview";
 
@@ -18,10 +19,13 @@ const styles = StyleSheet.create(
   {
     webviewContainer: {
       flex: 1,
-      backgroundColor: "white"
+      backgroundColor: Colors.backgroundDark,
     },
     webviewWrapper: {
-      flex: 1
+      flex: 1,
+      borderColor: Colors.backgroundDark,
+      borderWidth: 10,
+      borderRadius: 10,
     },
     webview: {
       flex: 1
