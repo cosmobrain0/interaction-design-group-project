@@ -4,14 +4,13 @@ export type moonDataType = {
   moon_age: string
 }
 
-export const fetchMoonData = async (setMoonData: any, setLoading: any) => {
+export const fetchMoonData = async (day: number, setMoonData: any, setLoading: any) => {
   try {
     setLoading(true)
     const response = await fetch("https://api.viewbits.com/v1/moonphase")
     const json = await response.json()
 
-    const todayMoonData = json[3]
-    console.log("hi")
+    const todayMoonData = json[day]
     setMoonData(todayMoonData)
 
   } catch (error) {

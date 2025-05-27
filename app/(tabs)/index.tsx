@@ -55,6 +55,7 @@ export default function Home() {
               setCloudCoverageLoading(false);
             }
           );
+          fetchMoonData(day, setMoonData, setMoonLoading)
         })
         .catch((err) => console.warn('Failed to load saved location', err));
     }, [])
@@ -72,7 +73,7 @@ export default function Home() {
   const [moonLoading, setMoonLoading] = useState(true)
 
   useEffect(() => {
-    fetchMoonData(setMoonData, setMoonLoading)
+    fetchMoonData(day, setMoonData, setMoonLoading)
   }, [])
 
   return <SafeAreaView
@@ -93,6 +94,8 @@ export default function Home() {
         setSunsetTime: setSunsetTime,
         setMaxTemperature: setMaxTemperature,
         setMinTemperature: setMinTemperature,
+        setMoonData: setMoonData,
+        setMoonLoading: setMoonLoading
       }}/>
     </View>
     {/* Weather information column */}
@@ -136,6 +139,7 @@ export default function Home() {
               maxTemperature: maxTemperature ?? 0,
               minTemperature: minTemperature ?? 0,
             }}
+            loading={false}
           />
         </View>
         <View style={[Styles.container, styles.boxContainer]}>
