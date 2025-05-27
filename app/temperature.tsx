@@ -3,8 +3,8 @@ import HourScroller from "@/components/HourScroller";
 import { Colors } from "@/constants/Colors";
 import { Styles } from "@/constants/Styles";
 import { Ionicons } from "@expo/vector-icons";
-import { useFocusEffect, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import { useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Temperature() {
@@ -15,21 +15,20 @@ export default function Temperature() {
   const [minTemperature, setMinTemperature] = useState<number | null>(null);
   const [hourlyTemperature, setHourlyTemperature] = useState<number[] | null>(null);
   
-  useFocusEffect(
+  useEffect(
     React.useCallback(() => {
-          // Refresh the line chart data when returning to the index page
-          fetchOtherWeatherData(
-            day,
-            setAvgTemperature,
-            () => {},
-            () => {},
-            () => {},
-            () => {},
-            setMaxTemperature,
-            setMinTemperature,
-            setHourlyTemperature,
-            () => {}
-          );
+      fetchOtherWeatherData(
+        day,
+        setAvgTemperature,
+        () => {},
+        () => {},
+        () => {},
+        () => {},
+        setMinTemperature,
+        setMaxTemperature,
+        setHourlyTemperature,
+        () => {}
+      );
     }, [])
   );
 

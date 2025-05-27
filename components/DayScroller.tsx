@@ -1,4 +1,5 @@
 import { fetchCloudCoverageData } from "@/api/fetchCloudCoverageData";
+import { fetchMoonData } from "@/api/fetchMoonData";
 import { fetchOtherWeatherData } from "@/api/fetchOtherWeatherData";
 import { useState } from "react";
 import { Pressable, ScrollView, StyleSheet } from "react-native";
@@ -22,7 +23,9 @@ type DataSetters = {
   setSunriseTime: any,
   setSunsetTime: any,
   setMaxTemperature: any,
-  setMinTemperature: any
+  setMinTemperature: any,
+  setMoonData: any,
+  setMoonLoading: any
 }
 
 export default function DayScroller({ today, setDay, dataSetters }: { today: Date, setDay: any, dataSetters: DataSetters }) {
@@ -54,6 +57,11 @@ export default function DayScroller({ today, setDay, dataSetters }: { today: Dat
             dataSetters.setMinTemperature,
             () => {},
             () => {},
+          )
+          fetchMoonData(
+            day,
+            dataSetters.setMoonData,
+            dataSetters.setMoonLoading
           )
         }}
       >

@@ -1,20 +1,17 @@
-import { WeatherContext } from "@/api/WeatherContext";
 import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
-import { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Box from "./Box";
 
 
-export default function TemperatureBox({ href, data }: { href: string, data: any }) {
-  const temperature = useContext(WeatherContext)?.temperature
+export default function TemperatureBox({ href, data, loading }: { href: string, data: any, loading: boolean }) {
   
   return <Box
     title="Temperature"
     href={href}
-    loading={!temperature}
+    loading={loading}
   >
-    {temperature && <View style={styles.temperatureColumn}>
+    <View style={styles.temperatureColumn}>
       <View style={styles.temperatureContainer}>
         <Text style={styles.temperatureText}>
           {data.avgTemperature}°
@@ -44,7 +41,7 @@ export default function TemperatureBox({ href, data }: { href: string, data: any
           </Text>
         </View>
       </View>
-    </View>}
+    </View>
   </Box>
 }
 
