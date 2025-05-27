@@ -119,11 +119,10 @@ export const fetchOtherWeatherData = async (
     const sunset = new Date((Number(sunsetVar.valuesInt64(0)) + utcOffsetSeconds) * 1000);
 
     const timeFormat = await loadData("timeFormat", "TwentyFourHour");
-    console.log("timeFormat", timeFormat);
     const timeOptions: Intl.DateTimeFormatOptions = timeFormat === "TWELVEHOUR"
       ? { hour: "numeric", minute: "numeric", hour12: true }
       : { hour: "numeric", minute: "numeric", hour12: false };
-    console.log("timeOptions", timeOptions);
+
 
 
     setTemperature(avgTemperature);
