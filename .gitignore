@@ -42,5 +42,3 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
-
-rawdata/
