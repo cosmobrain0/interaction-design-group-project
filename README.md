@@ -3,6 +3,10 @@
 This is a weather app targeted at astronomers for the CST: Part IA Interaction Design group project.
 This app uses React Native with the Expo framework.
 
+
+https://github.com/user-attachments/assets/a7162a2d-10d8-4150-a145-bc12f32d4bd7
+
+
 ##  How to Run the Program
 
 ###  Prerequisites
